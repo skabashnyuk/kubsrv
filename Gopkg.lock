@@ -2,6 +2,18 @@
 
 
 [[projects]]
+  name = "github.com/appleboy/gofight"
+  packages = ["."]
+  revision = "beadc315fb676177c07a89c34159b9ca4e1aafd9"
+  version = "v2.0.0"
+
+[[projects]]
+  name = "github.com/davecgh/go-spew"
+  packages = ["spew"]
+  revision = "346938d642f2ec3594ed81d874461961cd0faa76"
+  version = "v1.1.0"
+
+[[projects]]
   name = "github.com/ghodss/yaml"
   packages = ["."]
   revision = "0ca9ea5df5451ffdf184b4428c902747c2c11cd7"
@@ -76,10 +88,22 @@
   version = "1.0.0"
 
 [[projects]]
+  name = "github.com/pmezard/go-difflib"
+  packages = ["difflib"]
+  revision = "792786c7400a136282c1664665ae0a8db921c6c2"
+  version = "v1.0.0"
+
+[[projects]]
   name = "github.com/spf13/pflag"
   packages = ["."]
   revision = "e57e3eeb33f795204c1ca35f56c44f83227c6e66"
   version = "v1.0.0"
+
+[[projects]]
+  name = "github.com/stretchr/testify"
+  packages = ["assert"]
+  revision = "12b6f73e6084dad08a7c6e575284b177ecafbc71"
+  version = "v1.2.1"
 
 [[projects]]
   name = "github.com/ugorji/go"
@@ -180,6 +204,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "ea794f8727c9014d9cd31bb65e3998e669b918bad0b3e66f9a298b80c1b654c7"
+  inputs-digest = "6326a6326b23309a0345060f7457ffc568216e73290ef8ccdb1e7e8c61c958db"
   solver-name = "gps-cdcl"
   solver-version = 1

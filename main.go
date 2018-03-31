@@ -8,6 +8,18 @@ import (
 )
 
 func main() {
+
+
+    r := GinEngine()
+
+    r.Run() // listen and serve on 0.0.0.0:8080
+
+}
+
+
+// GinEngine is gin router.
+func GinEngine() *gin.Engine {
+    r := gin.Default()
     claim := v1.PersistentVolumeClaim{
         TypeMeta: metav1.TypeMeta{
             Kind:       "PersistentVolumeClaim",
@@ -17,12 +29,10 @@ func main() {
             Name:      "claim",
             Namespace: "ns",
         }}
-
-    r := gin.Default()
     r.GET("/ping", func(c *gin.Context) {
         c.Render(200, render.GYAML{Data: claim})
 
     })
-    r.Run() // listen and serve on 0.0.0.0:8080
 
+    return r
 }
