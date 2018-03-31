@@ -7,12 +7,6 @@ import (
     "github.com/skabashnyuk/kubsrv/render"
 )
 
-//type Product struct {
-//	gorm.Model
-//	Code string
-//	Price uint
-//}
-
 func main() {
     claim := v1.PersistentVolumeClaim{
         TypeMeta: metav1.TypeMeta{
