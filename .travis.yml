@@ -19,7 +19,7 @@ install:
   - dep ensure
 
 script:
-  - go test
+  - go test ./...
 
 notifications:
   email: false

@@ -38,6 +38,3 @@
 #version = "1.2.0"
   branch="master"
 
-[[constraint]]
-  name = "github.com/jinzhu/gorm"
-  version = "1.9.1"
