@@ -6,15 +6,15 @@ import (
 	"net/http"
 	"encoding/json"
 	"github.com/stretchr/testify/assert"
+	"io/ioutil"
+	"github.com/ghodss/yaml"
+	"github.com/skabashnyuk/kubsrv/model/v1"
 )
 
 func TestGinHelloWorld(t *testing.T) {
 	r := gofight.New()
 
 	r.GET("/").
-	    SetHeader(gofight.H{
-	     "Host": "localhost:8080",
-	   	}).
 		SetDebug(true).
 		Run(Setup(), func(r gofight.HTTPResponse, rq gofight.HTTPRequest) {
 
@@ -32,4 +32,18 @@ func TestGinHelloWorld(t *testing.T) {
 		assert.Equal(t, "http://localhost:8080/feature/{name}/{version}", personMap["feature_url"])
 
 	})
+}
+
+func TestYaml(t *testing.T) {
+	dat, err := ioutil.ReadFile("test-service.yaml")
+	check(err)
+	var cheService v1.CheService;
+	err = yaml.Unmarshal(dat, &cheService)
+	check(err)
+}
+
+func check(e error) {
+	if e != nil {
+		panic(e)
+	}
 }

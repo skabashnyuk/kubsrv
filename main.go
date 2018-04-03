@@ -4,6 +4,8 @@ import (
     "github.com/skabashnyuk/kubsrv/server"
     "os"
     "strconv"
+    "github.com/nanobox-io/golang-scribble"
+    "fmt"
 )
 
 func main() {
