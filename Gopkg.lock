@@ -53,7 +53,13 @@
 
 [[projects]]
   name = "github.com/golang/protobuf"
-  packages = ["proto"]
+  packages = [
+    "proto",
+    "ptypes",
+    "ptypes/any",
+    "ptypes/duration",
+    "ptypes/timestamp"
+  ]
   revision = "925541529c1fa6821df4e44ce2723319eb2be768"
   version = "v1.0.0"
 
@@ -62,6 +68,16 @@
   name = "github.com/google/gofuzz"
   packages = ["."]
   revision = "24818f796faf91cd76ec7bddd72458fbced7a6c1"
+
+[[projects]]
+  name = "github.com/googleapis/gnostic"
+  packages = [
+    "OpenAPIv2",
+    "compiler",
+    "extensions"
+  ]
+  revision = "ee43cbb60db7bd22502942cccbc39059117352ab"
+  version = "v0.1.0"
 
 [[projects]]
   branch = "master"
@@ -125,8 +141,15 @@
 
 [[projects]]
   branch = "master"
+  name = "golang.org/x/crypto"
+  packages = ["ssh/terminal"]
+  revision = "b2aa35443fbc700ab74c586ae79b81c171851023"
+
+[[projects]]
+  branch = "master"
   name = "golang.org/x/net"
   packages = [
+    "context",
     "http2",
     "http2/hpack",
     "idna",
@@ -137,7 +160,10 @@
 [[projects]]
   branch = "master"
   name = "golang.org/x/sys"
-  packages = ["unix"]
+  packages = [
+    "unix",
+    "windows"
+  ]
   revision = "f67933eaf9e2f750f58a234209a11ebc1107be38"
 
 [[projects]]
@@ -162,6 +188,12 @@
   version = "v0.3.0"
 
 [[projects]]
+  branch = "master"
+  name = "golang.org/x/time"
+  packages = ["rate"]
+  revision = "26559e0f760e39c24d730d3224364aef164ee23f"
+
+[[projects]]
   name = "gopkg.in/go-playground/validator.v8"
   packages = ["."]
   revision = "5f1438d3fca68893a817e4a66806cea46a9e4ebf"
@@ -182,24 +214,65 @@
 [[projects]]
   branch = "master"
   name = "k8s.io/api"
-  packages = ["core/v1"]
+  packages = [
+    "admissionregistration/v1alpha1",
+    "admissionregistration/v1beta1",
+    "apps/v1",
+    "apps/v1beta1",
+    "apps/v1beta2",
+    "authentication/v1",
+    "authentication/v1beta1",
+    "authorization/v1",
+    "authorization/v1beta1",
+    "autoscaling/v1",
+    "autoscaling/v2beta1",
+    "batch/v1",
+    "batch/v1beta1",
+    "batch/v2alpha1",
+    "certificates/v1beta1",
+    "core/v1",
+    "events/v1beta1",
+    "extensions/v1beta1",
+    "networking/v1",
+    "policy/v1beta1",
+    "rbac/v1",
+    "rbac/v1alpha1",
+    "rbac/v1beta1",
+    "scheduling/v1alpha1",
+    "settings/v1alpha1",
+    "storage/v1",
+    "storage/v1alpha1",
+    "storage/v1beta1"
+  ]
   revision = "c4ebf33f93081f8c7602d29a59944e4a9f684ac2"
 
 [[projects]]
   branch = "master"
   name = "k8s.io/apimachinery"
   packages = [
+    "pkg/api/errors",
+    "pkg/api/meta",
     "pkg/api/resource",
     "pkg/apis/meta/v1",
+    "pkg/apis/meta/v1/unstructured",
+    "pkg/apis/meta/v1beta1",
     "pkg/conversion",
     "pkg/conversion/queryparams",
     "pkg/fields",
     "pkg/labels",
     "pkg/runtime",
     "pkg/runtime/schema",
+    "pkg/runtime/serializer",
+    "pkg/runtime/serializer/json",
+    "pkg/runtime/serializer/protobuf",
+    "pkg/runtime/serializer/recognizer",
+    "pkg/runtime/serializer/streaming",
+    "pkg/runtime/serializer/versioning",
     "pkg/selection",
     "pkg/types",
+    "pkg/util/clock",
     "pkg/util/errors",
+    "pkg/util/framer",
     "pkg/util/intstr",
     "pkg/util/json",
     "pkg/util/net",
@@ -208,14 +281,39 @@
     "pkg/util/validation",
     "pkg/util/validation/field",
     "pkg/util/wait",
+    "pkg/util/yaml",
+    "pkg/version",
     "pkg/watch",
     "third_party/forked/golang/reflect"
   ]
   revision = "0ed326127d3068118ef128c76673dad6005736ba"
 
+[[projects]]
+  name = "k8s.io/client-go"
+  packages = [
+    "discovery",
+    "discovery/fake",
+    "kubernetes/scheme",
+    "pkg/apis/clientauthentication",
+    "pkg/apis/clientauthentication/v1alpha1",
+    "pkg/version",
+    "plugin/pkg/client/auth/exec",
+    "rest",
+    "rest/watch",
+    "testing",
+    "tools/clientcmd/api",
+    "tools/metrics",
+    "transport",
+    "util/cert",
+    "util/flowcontrol",
+    "util/integer"
+  ]
+  revision = "23781f4d6632d88e869066eaebb743857aa1ef9b"
+  version = "v7.0.0"
+
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "c4f4fbacc3b8667aebbec233747abefd3c14868c32572c345d488c11af88af7e"
+  inputs-digest = "996d6d4025cd915e03c9b686fcde5429660977029b0c84341f7aca0267323068"
   solver-name = "gps-cdcl"
   solver-version = 1
