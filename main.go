@@ -4,11 +4,37 @@ import (
     "github.com/skabashnyuk/kubsrv/server"
     "os"
     "strconv"
-    "github.com/nanobox-io/golang-scribble"
     "fmt"
+
+    "encoding/json"
 )
 
 func main() {
+    var jsonBlob = []byte(`
+	{
+	"Name":"cute",
+	"animals":[
+		{"name": "Platypus", "order": "Monotremata", "something":"else"},
+		{"name": "Quoll",    "order": "Dasyuromorphia", "something":"else"}
+	]}`)
+
+    type Animal struct {
+        Name  string `json:"name"`
+        Order string `json:"order"`
+    }
+
+    type Species struct {
+        Name    string
+        Animals []Animal `json:"animals"`
+    }
+
+    var species Species
+    err := json.Unmarshal(jsonBlob, &species)
+    if err != nil {
+        fmt.Println("error:", err)
+    }
+    fmt.Printf("%+v", species)
+
 
 
     s := server.Setup()

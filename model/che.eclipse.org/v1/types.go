@@ -5,6 +5,9 @@ import (
 	"k8s.io/api/core/v1"
 )
 
+// +genclient
+// +genclient:noStatus
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 type CheService struct {
 	metav1.TypeMeta `json:",inline"`
 	// Standard object's metadata.
@@ -22,12 +25,16 @@ type Version struct {
 
 type CheServiceSpec struct {
 	Services []v1.Service `json:"services,omitempty"`
-
+	//
 	Pods []v1.Pod `json:"pods,omitempty"`
 
 	Commands []CheCommand `json:"commands,omitempty"`
 
 	Version
+}
+
+type CheServiceSpecTesst struct {
+	Commands []CheCommand `json:"commands,omitempty"`
 }
 
 type CheCommand struct {
@@ -49,6 +56,9 @@ type CheCommandSpec struct {
 	Commands []string `json:"command"`
 }
 
+// +genclient
+// +genclient:noStatus
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 type CheFeature struct {
 	metav1.TypeMeta `json:",inline"`
 	// Standard object's metadata.

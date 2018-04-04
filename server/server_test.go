@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"github.com/ghodss/yaml"
-	"github.com/skabashnyuk/kubsrv/model/v1"
+	"github.com/skabashnyuk/kubsrv/model/che.eclipse.org/v1"
 )
 
 func TestGinHelloWorld(t *testing.T) {
@@ -18,7 +18,6 @@ func TestGinHelloWorld(t *testing.T) {
 		SetDebug(true).
 		Run(Setup(), func(r gofight.HTTPResponse, rq gofight.HTTPRequest) {
 
-		//assert.Equal(t, "Hello World", r.Body.String())
 		assert.Equal(t, http.StatusOK, r.Code)
 
 		personMap := make(map[string]string)
@@ -39,6 +38,23 @@ func TestYaml(t *testing.T) {
 	check(err)
 	var cheService v1.CheService;
 	err = yaml.Unmarshal(dat, &cheService)
+	check(err)
+}
+
+func TestJson(t *testing.T) {
+	dat, err := ioutil.ReadFile("test-service.json")
+	check(err)
+	var cheService v1.CheService
+	err = json.Unmarshal(dat, &cheService)
+	check(err)
+}
+
+func TestJson2(t *testing.T) {
+	dat, err := ioutil.ReadFile("test-command.json")
+	check(err)
+	var cheService v1.CheServiceSpec
+
+	err = json.Unmarshal(dat, &cheService)
 	check(err)
 }
 
