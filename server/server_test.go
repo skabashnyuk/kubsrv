@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"github.com/ghodss/yaml"
-	"github.com/skabashnyuk/kubsrv/model/che.eclipse.org/v1"
+	"github.com/skabashnyuk/kubsrv/pkg/api/che.eclipse.org/v1"
 )
 
 func TestGinHelloWorld(t *testing.T) {
