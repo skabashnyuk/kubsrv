@@ -1,3 +1,4 @@
+
 package v1
 
 import (
@@ -33,9 +34,6 @@ type CheServiceSpec struct {
 	Version
 }
 
-type CheServiceSpecTesst struct {
-	Commands []CheCommand `json:"commands,omitempty"`
-}
 
 type CheCommand struct {
 	metav1.TypeMeta `json:",inline"`
