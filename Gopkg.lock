@@ -197,9 +197,15 @@
     "pkg/labels",
     "pkg/runtime",
     "pkg/runtime/schema",
+    "pkg/runtime/serializer",
+    "pkg/runtime/serializer/json",
+    "pkg/runtime/serializer/protobuf",
+    "pkg/runtime/serializer/recognizer",
+    "pkg/runtime/serializer/versioning",
     "pkg/selection",
     "pkg/types",
     "pkg/util/errors",
+    "pkg/util/framer",
     "pkg/util/intstr",
     "pkg/util/json",
     "pkg/util/net",
@@ -208,6 +214,7 @@
     "pkg/util/validation",
     "pkg/util/validation/field",
     "pkg/util/wait",
+    "pkg/util/yaml",
     "pkg/watch",
     "third_party/forked/golang/reflect"
   ]
@@ -216,6 +223,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "e184c1db4e85b51e63abf92b17242ccb7197168bf9e8e808378cded01ce3bd2c"
+  inputs-digest = "112b2623b16ed2917e0570930954b98841ab14586a88c6b7fc78704909af824a"
   solver-name = "gps-cdcl"
   solver-version = 1

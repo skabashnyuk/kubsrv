@@ -1,4 +1,4 @@
-apiVersion: stable.che.eclipse.org/v1
+apiVersion: che.eclipse.org/v1
 kind: CheService
 metadata:
  name: io.typefox.theia-ide.che-service
@@ -44,7 +44,7 @@ spec:
          persistentVolumeClaim:
          claimName: projects
  commands:
-   - apiVersion: stable.che.eclipse.org/v1
+   - apiVersion: che.eclipse.org/v1
      kind: CheCommand
      metadata:
        name: mvn-clean
