@@ -4,14 +4,6 @@
   unused-packages = true
 
 [[constraint]]
-  branch = "master"
-  name = "k8s.io/api"
-
-[[constraint]]
   name = "github.com/gin-gonic/gin"
 #version = "1.2.0"
   branch="master"
-
-[[constraint]]
-  branch = "master"
-  name = "k8s.io/apimachinery"

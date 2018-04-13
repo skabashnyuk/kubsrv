@@ -9,7 +9,6 @@ import (
 
 func Setup() *gin.Engine {
 	r := gin.Default()
-
 	router.Initialize(r)
 	return r
 }
