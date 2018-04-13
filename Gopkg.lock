@@ -43,12 +43,6 @@
   version = "v1.0.0"
 
 [[projects]]
-  branch = "master"
-  name = "github.com/jcelliott/lumber"
-  packages = ["."]
-  revision = "dd349441af25132d146d7095c6693a15431fc9b1"
-
-[[projects]]
   name = "github.com/json-iterator/go"
   packages = ["."]
   revision = "ca39e5af3ece67bbcda3d0f4f56a8e24d9f2dad4"
@@ -71,12 +65,6 @@
   packages = ["."]
   revision = "1df9eeb2bb81f327b96228865c5687bc2194af3f"
   version = "1.0.0"
-
-[[projects]]
-  branch = "master"
-  name = "github.com/nanobox-io/golang-scribble"
-  packages = ["."]
-  revision = "ced58d671850da57ce8c11315424513b608083d7"
 
 [[projects]]
   name = "github.com/pmezard/go-difflib"
@@ -117,6 +105,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "7066bec242827ef891a508116453a40e3d290509128d453a8f9f29621d8f2475"
+  inputs-digest = "69ecb9013a5a9f8b93bd8bc2834d97b812bd3a9c071a3607460179aa6ef3d3b9"
   solver-name = "gps-cdcl"
   solver-version = 1
