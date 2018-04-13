@@ -6,9 +6,6 @@ import (
 	"net/http"
 	"encoding/json"
 	"github.com/stretchr/testify/assert"
-	"io/ioutil"
-	"github.com/ghodss/yaml"
-	chev1 "github.com/skabashnyuk/kubsrv/pkg/api/che.eclipse.org/v1"
 )
 
 func TestGinHelloWorld(t *testing.T) {
@@ -32,28 +29,4 @@ func TestGinHelloWorld(t *testing.T) {
 
 	})
 }
-
-func TestYaml(t *testing.T) {
-	dat, err := ioutil.ReadFile("test-service.yaml")
-	check(err)
-	var cheService chev1.CheService;
-	err = yaml.Unmarshal(dat, &cheService)
-	check(err)
-}
-
-func TestJson(t *testing.T) {
-	dat, err := ioutil.ReadFile("test-service.json")
-	check(err)
-	var cheService chev1.CheService
-	err = json.Unmarshal(dat, &cheService)
-	check(err)
-}
-
-
-func check(e error) {
-	if e != nil {
-		panic(e)
-	}
-}
-
 
