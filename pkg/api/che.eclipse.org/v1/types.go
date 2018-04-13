@@ -86,8 +86,6 @@ type ServicePort struct {
 	// More info: https://kubernetes.io/docs/concepts/services-networking/service/#defining-a-service
 	// +optional
 	TargetPort int32 `json:"targetPort,omitempty"`
-
-
 }
 
 // Protocol defines network protocols supported for things like container ports.
@@ -146,11 +144,8 @@ type PersistentVolumeClaimVolumeSource struct {
 	ReadOnly bool `json:"readOnly,omitempty"`
 }
 
-
-
 // A single application container that you want to run within a pod.
 type Container struct {
-
 	// Name of the container specified as a DNS_LABEL.
 	// Each container in a pod must have a unique name (DNS_LABEL).
 	// Cannot be updated.
@@ -209,16 +204,12 @@ type VolumeMount struct {
 type CheCommand struct {
 	TypeMeta   `json:",inline"`
 	ObjectMeta `json:"metadata,omitempty"`
-
-	// +optional
 	Spec CheCommandSpec `json:"spec,omitempty"`
 }
 
 type CheCommandSpec struct {
 	TargetLabelSelector string `json:"target-label-selector"`
-
 	WorkingDirectory string `json:"working-dir,omitempty"`
-
 	Commands []string `json:"command"`
 }
 
@@ -226,7 +217,6 @@ type CheFeature struct {
 	TypeMeta   `json:",inline"`
 	ObjectMeta `json:"metadata,omitempty"`
 
-	// +optional
 	Spec CheFeatureSpec `json:"spec,omitempty"`
 }
 
