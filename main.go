@@ -1,14 +1,17 @@
 package main
 
 import (
-    "github.com/skabashnyuk/kubsrv/server"
     "os"
     "strconv"
+    "github.com/gin-gonic/gin"
+    "github.com/skabashnyuk/kubsrv/controller"
 )
 
 func main() {
 
-    s := server.Setup()
+    router := gin.Default()
+    router.GET("/", controller.APIEndpoints)
+    router.GET("/service/:name/:version", controller.GetService)
     port := "8080"
 
     if p := os.Getenv("PORT"); p != "" {
@@ -17,6 +20,6 @@ func main() {
         }
     }
 
-    s.Run(":" + port)
+    router.Run(":" + port)
 
 }

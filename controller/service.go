@@ -2,22 +2,14 @@ package controller
 
 import (
 	"github.com/gin-gonic/gin"
+	"path/filepath"
+	"strings"
+	"os"
 )
 
-func CreateService(c *gin.Context) {
-
-	//db := storage.DBInstance(c)
-	//service := v1.CheService{}
-	//
-	//if err := c.Bind(&service); err != nil {
-	//	c.JSON(400, gin.H{"error": err.Error()})
-	//	return
-	//}
-
-	//if err := db.Write("service",service.ObjectMeta.Name ,&service); err != nil {
-	//	c.JSON(400, gin.H{"error": err.Error()})
-	//	return
-	//}
-
-	//c.JSON(201, service)
+func GetService(c *gin.Context) {
+	name := c.Param("name")
+	name = strings.Replace(name,".",string(os.PathSeparator), -1)
+	version := c.Param("version")
+	c.File(filepath.Join("/Users/sj/dev/src/skabashnyuk/che-registry/", name, version, "CheService.yaml"))
 }

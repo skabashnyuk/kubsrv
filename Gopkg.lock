@@ -2,12 +2,6 @@
 
 
 [[projects]]
-  name = "github.com/appleboy/gofight"
-  packages = ["."]
-  revision = "beadc315fb676177c07a89c34159b9ca4e1aafd9"
-  version = "v2.0.0"
-
-[[projects]]
   name = "github.com/davecgh/go-spew"
   packages = ["spew"]
   revision = "346938d642f2ec3594ed81d874461961cd0faa76"
@@ -105,6 +99,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "69ecb9013a5a9f8b93bd8bc2834d97b812bd3a9c071a3607460179aa6ef3d3b9"
+  inputs-digest = "48eeb1382d973fd80c3d91f5e88ead5fb3135d1fc61c17d8e9c78e8842132b8a"
   solver-name = "gps-cdcl"
   solver-version = 1
