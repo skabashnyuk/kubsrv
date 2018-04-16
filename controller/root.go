@@ -4,7 +4,10 @@ import (
 	"github.com/gin-gonic/gin"
 	"fmt"
 	"net/http"
+	"os"
 )
+
+var cheRegistryRepository  = os.Getenv("CHE_REGISTRY_REPOSITORY")
 
 func APIEndpoints(c *gin.Context) {
 	reqScheme := "http"
@@ -22,9 +25,7 @@ func APIEndpoints(c *gin.Context) {
 	baseURL := fmt.Sprintf("%s://%s", reqScheme, reqHost)
 
 	resources := map[string]string{
-		"services_url": baseURL + "/service",
 		"service_url":  baseURL + "/service/{name}/{version}",
-		"features_url": baseURL + "/feature",
 		"feature_url":  baseURL + "/feature/{name}/{version}",
 	}
 

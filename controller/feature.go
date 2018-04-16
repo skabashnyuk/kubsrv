@@ -8,14 +8,13 @@ import (
 	"log"
 )
 
-func GetService(c *gin.Context) {
+func GetFeature(c *gin.Context) {
 	name := c.Param("name")
 	name = strings.Replace(name, ".", string(os.PathSeparator), -1)
 	version := c.Param("version")
-	cheServiceFile := filepath.Join(cheRegistryRepository, name, version, "CheService.yaml")
+	cheServiceFile := filepath.Join(cheRegistryRepository, name, version, "CheFeature.yaml")
 	if (gin.IsDebugging()) {
-		log.Printf("Requested CheService %s", cheServiceFile)
+		log.Printf("Requested CheFeature %s", cheServiceFile)
 	}
-
-	c.YAML(200, cheServiceFile)
+	c.File(cheServiceFile)
 }
