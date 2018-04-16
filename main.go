@@ -12,7 +12,9 @@ func main() {
 	router := gin.Default()
 	router.GET("/", controller.APIEndpoints)
 	router.GET("/service/:name/:version", controller.GetService)
+	router.GET("/service", controller.GetServiceByIdList)
 	router.GET("/feature/:name/:version", controller.GetFeature)
+	router.GET("/feature", controller.GetFeatureByIdList)
 	port := "8080"
 
 	if p := os.Getenv("PORT"); p != "" {

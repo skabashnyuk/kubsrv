@@ -2,19 +2,53 @@ package controller
 
 import (
 	"github.com/gin-gonic/gin"
-	"path/filepath"
+	"net/http"
+	"github.com/skabashnyuk/kubsrv/render"
+	"github.com/skabashnyuk/kubsrv/storage"
 	"strings"
-	"os"
-	"log"
+	"github.com/skabashnyuk/kubsrv/types"
 )
 
 func GetFeature(c *gin.Context) {
-	name := c.Param("name")
-	name = strings.Replace(name, ".", string(os.PathSeparator), -1)
-	version := c.Param("version")
-	cheServiceFile := filepath.Join(cheRegistryRepository, name, version, "CheFeature.yaml")
-	if (gin.IsDebugging()) {
-		log.Printf("Requested CheFeature %s", cheServiceFile)
+	obj, err := storage.GetCheFeature(&storage.ItemId{
+		Name:    c.Param("name"),
+		Version: c.Param("version")})
+
+	if err != nil {
+		msg, code := ToHTTPError(err)
+		//Error(w, msg, code)
+		http.Error(c.Writer, msg, code)
+		c.Abort()
+		return
 	}
-	c.File(cheServiceFile)
+	c.Render(200, render.GYAML{Data: obj})
+}
+
+
+
+func GetFeatureByIdList(c *gin.Context) {
+	ids, exists := c.GetQueryArray("id")
+	if exists {
+		var cheFeatures []types.CheFeature
+		for _, k := range ids {
+			stringSlice := strings.Split(k, ":")
+
+			obj, err := storage.GetCheFeature(&storage.ItemId{
+				Name:    stringSlice[0],
+				Version: stringSlice[1]})
+
+			if err != nil {
+				msg, code := ToHTTPError(err)
+				//Error(w, msg, code)
+				http.Error(c.Writer, msg, code)
+				c.Abort()
+				return
+			}
+			cheFeatures = append(cheFeatures, *obj)
+		}
+		c.Render(200, render.GYAML{Data: cheFeatures})
+
+	} else {
+		c.String(400, "Invalid request. No id query parameter provided")
+	}
 }
