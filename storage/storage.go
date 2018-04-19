@@ -13,17 +13,19 @@ import (
 	"path"
 )
 
-var cheRegistryRepository = os.Getenv("CHE_REGISTRY_REPOSITORY")
-var cheRegistryGithubUrl = os.Getenv("CHE_REGISTRY_GITHUB_URL")
+type Storage struct {
+	CheRegistryRepository string
+	CheRegistryGithubUrl  string
+}
 
 type ItemId struct {
 	Name    string
 	Version string
 }
 
-func GetCheService(Id *ItemId) (*types.CheService, error) {
+func (storage *Storage) GetCheService(Id *ItemId) (*types.CheService, error) {
 	name := strings.Replace(Id.Name, ".", string(os.PathSeparator), -1)
-	cheServiceFile := filepath.Join(cheRegistryRepository, name, Id.Version, "CheService.yaml")
+	cheServiceFile := filepath.Join(storage.CheRegistryRepository, name, Id.Version, "CheService.yaml")
 	if _, err := os.Stat(cheServiceFile); os.IsNotExist(err) {
 		return nil, err
 	}
@@ -44,9 +46,9 @@ func GetCheService(Id *ItemId) (*types.CheService, error) {
 	return &obj, nil
 }
 
-func GetCheFeature(Id *ItemId) (*types.CheFeature, error) {
+func (storage *Storage) GetCheFeature(Id *ItemId) (*types.CheFeature, error) {
 	name := strings.Replace(Id.Name, ".", string(os.PathSeparator), -1)
-	cheServiceFile := filepath.Join(cheRegistryRepository, name, Id.Version, "CheFeature.yaml")
+	cheServiceFile := filepath.Join(storage.CheRegistryRepository, name, Id.Version, "CheFeature.yaml")
 	if _, err := os.Stat(cheServiceFile); os.IsNotExist(err) {
 		return nil, err
 	}
@@ -67,10 +69,10 @@ func GetCheFeature(Id *ItemId) (*types.CheFeature, error) {
 	return &obj, nil
 }
 
-func UpdateStorage() {
+func (storage *Storage) UpdateStorage() {
 
 	cmd := exec.Command("git", "pull")
-	cmd.Dir = cheRegistryRepository
+	cmd.Dir = storage.CheRegistryRepository
 	out, err := cmd.Output()
 
 	if err != nil {
@@ -79,13 +81,13 @@ func UpdateStorage() {
 	log.Printf("Storage update: %s\n", out)
 }
 
-func EnsureExists() {
+func (storage *Storage) EnsureExists() {
 
-	if _, err := os.Stat(path.Join(cheRegistryRepository, ".git")); os.IsNotExist(err) {
-		log.Print("Cloning %s\n", cheRegistryGithubUrl)
+	if _, err := os.Stat(path.Join(storage.CheRegistryRepository, ".git")); os.IsNotExist(err) {
+		log.Print("Cloning %s\n", storage.CheRegistryGithubUrl)
 
-		cmd := exec.Command("git", "clone", cheRegistryGithubUrl, ".")
-		cmd.Dir = cheRegistryRepository
+		cmd := exec.Command("git", "clone", storage.CheRegistryGithubUrl, ".")
+		cmd.Dir = storage.CheRegistryRepository
 
 		out, err := cmd.Output()
 

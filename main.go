@@ -7,34 +7,40 @@ import (
 	"github.com/skabashnyuk/kubsrv/controller"
 	"time"
 	"github.com/skabashnyuk/kubsrv/storage"
-	"fmt"
+	"flag"
 )
 
-
-var cheRegistryGithubUrl = os.Getenv("CHE_REGISTRY_UPDATE_INTERVAL")
-
 func main() {
+
+	storage := storage.Storage{}
+	cheRegistryUpdateInterval := flag.Int64("update", 0, "Storage update interval")
+	flag.StringVar(&storage.CheRegistryRepository, "registry", "", "Location of repository on filesystem")
+	flag.StringVar(&storage.CheRegistryGithubUrl, "github", "", "Git url of repository to clone")
+	flag.Parse()
+
+	if storage.CheRegistryGithubUrl == "" || storage.CheRegistryGithubUrl == "" || *cheRegistryUpdateInterval == 0 {
+		flag.PrintDefaults()
+		os.Exit(1)
+	}
 
 	//periodically update storage with features and services
 	go func() {
 		storage.EnsureExists()
-		i1, err := strconv.ParseInt(cheRegistryGithubUrl, 10, 64)
-		if err == nil {
-			fmt.Println(i1)
-		}
 
-
-		for range time.Tick(time.Second * time.Duration(i1)) {
+		for range time.Tick(time.Second * time.Duration(*cheRegistryUpdateInterval)) {
 			storage.UpdateStorage()
 		}
 	}()
 
+	service := &controller.Service{Storage: &storage}
+	feature := &controller.Feature{Storage: &storage}
+
 	router := gin.Default()
 	router.GET("/", controller.APIEndpoints)
-	router.GET("/service/:name/:version", controller.GetService)
-	router.GET("/service", controller.GetServiceByIdList)
-	router.GET("/feature/:name/:version", controller.GetFeature)
-	router.GET("/feature", controller.GetFeatureByIdList)
+	router.GET("/service/:name/:version", service.GetService)
+	router.GET("/service", service.GetServiceByIdList)
+	router.GET("/feature/:name/:version", feature.GetFeature)
+	router.GET("/feature", feature.GetFeatureByIdList)
 	port := "8080"
 
 	if p := os.Getenv("PORT"); p != "" {

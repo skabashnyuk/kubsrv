@@ -9,8 +9,12 @@ import (
 	"strings"
 )
 
-func GetService(c *gin.Context) {
-	obj, err := storage.GetCheService(&storage.ItemId{
+type Service struct {
+	Storage *storage.Storage
+}
+
+func (service *Service) GetService(c *gin.Context) {
+	obj, err := service.Storage.GetCheService(&storage.ItemId{
 		Name:    c.Param("name"),
 		Version: c.Param("version")})
 
@@ -24,14 +28,14 @@ func GetService(c *gin.Context) {
 	c.Render(200, render.GYAML{Data: obj})
 }
 
-func GetServiceByIdList(c *gin.Context) {
+func (service *Service) GetServiceByIdList(c *gin.Context) {
 	ids, exists := c.GetQueryArray("id")
 	if exists {
 		var cheServices []types.CheService
 		for _, k := range ids {
 			stringSlice := strings.Split(k, ":")
 
-			obj, err := storage.GetCheService(&storage.ItemId{
+			obj, err := service.Storage.GetCheService(&storage.ItemId{
 				Name:    stringSlice[0],
 				Version: stringSlice[1]})
 

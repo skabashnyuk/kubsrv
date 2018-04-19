@@ -9,8 +9,12 @@ import (
 	"github.com/skabashnyuk/kubsrv/types"
 )
 
-func GetFeature(c *gin.Context) {
-	obj, err := storage.GetCheFeature(&storage.ItemId{
+type Feature struct {
+	Storage *storage.Storage
+}
+
+func (feature *Feature) GetFeature(c *gin.Context) {
+	obj, err := feature.Storage.GetCheFeature(&storage.ItemId{
 		Name:    c.Param("name"),
 		Version: c.Param("version")})
 
@@ -24,16 +28,14 @@ func GetFeature(c *gin.Context) {
 	c.Render(200, render.GYAML{Data: obj})
 }
 
-
-
-func GetFeatureByIdList(c *gin.Context) {
+func (feature *Feature) GetFeatureByIdList(c *gin.Context) {
 	ids, exists := c.GetQueryArray("id")
 	if exists {
 		var cheFeatures []types.CheFeature
 		for _, k := range ids {
 			stringSlice := strings.Split(k, ":")
 
-			obj, err := storage.GetCheFeature(&storage.ItemId{
+			obj, err := feature.Storage.GetCheFeature(&storage.ItemId{
 				Name:    stringSlice[0],
 				Version: stringSlice[1]})
 
