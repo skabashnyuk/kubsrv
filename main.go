@@ -7,13 +7,24 @@ import (
 	"github.com/skabashnyuk/kubsrv/controller"
 	"time"
 	"github.com/skabashnyuk/kubsrv/storage"
+	"fmt"
 )
+
+
+var cheRegistryGithubUrl = os.Getenv("CHE_REGISTRY_UPDATE_INTERVAL")
 
 func main() {
 
 	//periodically update storage with features and services
 	go func() {
-		for range time.Tick(time.Second * 60) {
+		storage.EnsureExists()
+		i1, err := strconv.ParseInt(cheRegistryGithubUrl, 10, 64)
+		if err == nil {
+			fmt.Println(i1)
+		}
+
+
+		for range time.Tick(time.Second * time.Duration(i1)) {
 			storage.UpdateStorage()
 		}
 	}()

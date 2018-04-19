@@ -10,9 +10,11 @@ import (
 	"io/ioutil"
 	"github.com/ghodss/yaml"
 	"os/exec"
+	"path"
 )
 
 var cheRegistryRepository = os.Getenv("CHE_REGISTRY_REPOSITORY")
+var cheRegistryGithubUrl = os.Getenv("CHE_REGISTRY_GITHUB_URL")
 
 type ItemId struct {
 	Name    string
@@ -66,14 +68,34 @@ func GetCheFeature(Id *ItemId) (*types.CheFeature, error) {
 }
 
 func UpdateStorage() {
-	log.Print("Before pull\n")
 
-	cmd:= exec.Command("git", "pull")
+	cmd := exec.Command("git", "pull")
 	cmd.Dir = cheRegistryRepository
 	out, err := cmd.Output()
 
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Git pull %s\n", out)
+	log.Printf("Storage update: %s\n", out)
+}
+
+func EnsureExists() {
+
+	if _, err := os.Stat(path.Join(cheRegistryRepository, ".git")); os.IsNotExist(err) {
+		log.Print("Cloning %s\n", cheRegistryGithubUrl)
+
+		cmd := exec.Command("git", "clone", cheRegistryGithubUrl, ".")
+		cmd.Dir = cheRegistryRepository
+
+		out, err := cmd.Output()
+
+		if err != nil {
+			log.Fatal(err)
+		}
+		log.Printf("Storage initialized: %s\n", out)
+
+	} else {
+		log.Print("Git storage setup and ready e\n")
+	}
+
 }
