@@ -12,14 +12,13 @@ env:
   - secure: UnvZQaspzcQeF9s213OvBRPP2uCZ0TWFLE8gJAR09HiOZHtRVjwXC0E+oT7tqAAnM+mQNNjfzILbPc8ZhlD9xbtkHrTrr9r0AndvJ6FvN8wdhYJPDclI8UF8qvjtZ1f3k0LCFUA7B03crlUPG+/jST2dv9FzZqz6XhFiwu6fKYuZLcim8/Ck1o4pTVF7Xf3QhTMw7Xu21GhogcX2dMen0/asSy9TfsasH0Awd1f4fkh1idYPKdreE8xTzejMdCb0i0jMaKhd5peXSze2ox4HDL3cGGtrXA9RJahhsm0ANKMoRtQdlVJvBBfatDngP3Hr7bUzWWiyHn04DJ8toqdda/UzaMqtCF0vCx/jDSC4UA2QhrONbKCiNdScKtGsot/n7lLU+npvaIW6NTsFt/Q7olzr5a1f380EeNkdduEKBnm8GuNw6qrOdGfZ5+ITAC/ax9uWUTSvhYBxn0ya4Efdyi3aQXdYZ+haTzpIilZFjLO8tCOrVKhZ4BjrRQ3H81aQxs4x5pp/0+0RPmhlSPLAOHVcN/swR3pQmXCPLE8YHQ622jl6mukMngaxJI4W6Bk6/GxW6wyku8Rx6ddXjnohvuIXrH/TbcDZ5SI/gsvpWpmUXSgu9OEPpUgeK+SjTdg0ly5QBvTV811bDvgCpzSu7aD+Ptpdh6LGHSTScLAI4yo=
   - secure: gNaKchVr5U3++4YFEgwnpAgBGFGb2m4SRBhEoRROsXr2QOOSN5qJdjslF9zxBqcVRAPNem5uRGKNmWcCgsbI3tQXyUEqrV5tNJRqmQpyoL3yHMHN3cqTXz/amgYG1gbMJNBIA1OPE5GrmydLFOHgZaoMx/mS+1emnkPz+QDQ/h721bZZPoxGWnBq9gQwfZJDs/gHsrg6gR/L3a0hUOdA98fMXv3HP5D7vw4f9Uhvh5Hqy8ymva3ebvELjSkTRTdaZXGSsHSUdvgWENNQMJ6cxCfK4XRiNVDAEO2DdAG2cR/mTJx2ijwEFeXmAONM3Pm1Ct4k4tGElK+CwhoPYPbwYlZJlYkkRzCPtxBnCbWpkoFqyx6qpKigH/E5P2K/zlSLcm6Y6edJHJVoHoFDwakFYt3SHVnR0TnXB2iyWkUsahEQ4alqIIei0gxfm0MDrD3FoXtdx0wRopw4IvcAbgivTdi+YJfjAh8as8v6rGwGJyJJM9NR5AuOSaJv+4e2/XlMHZC+1Y/KFlaqlDBLZAad/621klMkTSnDk1cG38wQjVQxYETnSz2rGyqHwLlvXX2j3dkYeFHEYKMdy0bknLoRrxjf4jwm+MxEEpHWg7raOfOVNMpkdBfct+aSQ+cIljkebOecE7BGncAEGW2/EuKcAoLdHmX14P5HaEG4HX1rJAQ=
 before_deploy:
-- GOOS=linux GOARCH=amd64 go build  -o kubsrv_Linux_x86_64
+- CGO_ENABLED=0 GOOS=linux go build -a -ldflags '-w -s' -a -installsuffix cgo -o kubsrv_Linux_x86_64
 - docker login -u $DOCKER_USER -p $DOCKER_PASS
 - export REPO=ksmster/kubsrv
 - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH
   ; fi`
-- docker build -f Dockerfile -t $REPO:$COMMIT .
-- docker tag $REPO:$COMMIT $REPO:$TAG
-- docker tag $REPO:$COMMIT $REPO:travis-$TRAVIS_BUILD_NUMBER
+- docker build -f Dockerfile -t  $REPO:$TAG .
+- docker tag $REPO:latest
 - docker push $REPO
 deploy:
   skip_cleanup: true
