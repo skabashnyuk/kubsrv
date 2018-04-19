@@ -12,7 +12,7 @@ cache:
     - $GOPATH/pkg/dep
 
 before_deploy:
-- GOOS=linux GOARCH=amd64 go build -ldflags="$(govvv -flags -version $TRAVIS_TAG -pkg $(go list ./cmd))" -o che_Linux_x86_64
+- GOOS=linux GOARCH=amd64 go build  -o kubsrv_Linux_x86_64
 deploy:
   skip_cleanup: true
   provider: releases
