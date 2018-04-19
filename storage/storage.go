@@ -9,6 +9,7 @@ import (
 	"log"
 	"io/ioutil"
 	"github.com/ghodss/yaml"
+	"os/exec"
 )
 
 var cheRegistryRepository = os.Getenv("CHE_REGISTRY_REPOSITORY")
@@ -62,4 +63,17 @@ func GetCheFeature(Id *ItemId) (*types.CheFeature, error) {
 		return nil, err
 	}
 	return &obj, nil
+}
+
+func UpdateStorage() {
+	log.Print("Before pull\n")
+
+	cmd:= exec.Command("git", "pull")
+	cmd.Dir = cheRegistryRepository
+	out, err := cmd.Output()
+
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Printf("Git pull %s\n", out)
 }

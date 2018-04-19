@@ -5,9 +5,18 @@ import (
 	"strconv"
 	"github.com/gin-gonic/gin"
 	"github.com/skabashnyuk/kubsrv/controller"
+	"time"
+	"github.com/skabashnyuk/kubsrv/storage"
 )
 
 func main() {
+
+	//periodically update storage with features and services
+	go func() {
+		for range time.Tick(time.Second * 60) {
+			storage.UpdateStorage()
+		}
+	}()
 
 	router := gin.Default()
 	router.GET("/", controller.APIEndpoints)
