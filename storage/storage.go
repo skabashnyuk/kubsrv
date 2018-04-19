@@ -84,7 +84,7 @@ func (storage *Storage) UpdateStorage() {
 func (storage *Storage) EnsureExists() {
 
 	if _, err := os.Stat(path.Join(storage.CheRegistryRepository, ".git")); os.IsNotExist(err) {
-		log.Print("Cloning %s\n", storage.CheRegistryGithubUrl)
+		log.Printf("Cloning %s\n", storage.CheRegistryGithubUrl)
 
 		cmd := exec.Command("git", "clone", storage.CheRegistryGithubUrl, ".")
 		cmd.Dir = storage.CheRegistryRepository

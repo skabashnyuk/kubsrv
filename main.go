@@ -18,7 +18,7 @@ func main() {
 	flag.StringVar(&storage.CheRegistryGithubUrl, "github", "", "Git url of repository to clone")
 	flag.Parse()
 
-	if storage.CheRegistryGithubUrl == "" || storage.CheRegistryGithubUrl == "" || *cheRegistryUpdateInterval == 0 {
+	if storage.CheRegistryRepository == "" || storage.CheRegistryGithubUrl == "" || *cheRegistryUpdateInterval == 0 {
 		flag.PrintDefaults()
 		os.Exit(1)
 	}
