@@ -5,8 +5,22 @@ go:
 cache:
   directories:
   - "$GOPATH/pkg/dep"
+env:
+  global:
+  - secure: Nzd6Sb4bY/AZ1E1uSzhGxvsmB0GqaqFMmFLJIflhmDrm8tQ9XClUXa2YUYlKixqI6ld/h5KeV20BmmaMKZ41cTr28d8LU8YHAcr2cav5n5+9UVkKArKHsu26mmG3PzzKBQ32KSRzZEyspp6PlsidSeP389R8s0WfJzkHOzUrDCBVWrOof3CYoLhJh8V5rxgAcllH6KRuU7CJVYhFCmkgsoW1hZJRphHImE4o3w5AE33XY3K1fomocL1sjEwFnX1y+vLyyf2LcLisnb32wGMs4mYNoR6T8TxeRRlVGYSxr9fmkaQfJTX4OLIqVRVQ5lKNhCASjOE2jpznI13CEQOHcJjigHckh7+fTseyZckTP/yZF/oGmwIcim2eCdxHwcS+wO3YCtmNasvgGL9OlC+6T/09UPpOMN8evAa5jtuLiGg0lFrWcywVF7Y1ed7PaD11OFcVCuLYdAEGt/rtfd9u5sFGlZjXurzNMZw1ZdGddzkazoBfIbbwFwkV6Sxg2k0lo94zNCKOqGX6HDaGXGumsR2JdyLUF6zyOOmGY4carnwwhTPpHJ2sY+XMSXrpblfCxWgvG9DtUdmeSAlakVycG5/q6bfNgstpuKcfJcOkUhQRm+L+kYkKetiyiIyXgYPVPNGHuXJTw8rOoG1vPnwgWWJTcCacvoENZoHZdQyBjrE=
+  - secure: LMw3Bm82Ae/Ic7TdR6dZTB7OJI6hA1Hh/MmZsgXHacoBbRMMaLoV/iJhFSSFvytLrHKUC3YV0EfJx9YgdHXPW0wEphWRluRECUuuR26No2ZLwclnHKxCGgTR67ee6o7XR7Ro3YIlVk/K/DA5R/eFYxy2X4YjXsoyLznGurXuNO9uwGiCDwnaSIk/wz8rUd66pLJ/jryPg3BqhBZ0b2na4PxS0deH15m/3tTd5fm6ClgC6/t9bPx5IKvv4E/7oR68pREisE7ezTb3GAlVhZ1QUQcxuK3obqhHuVRwQmfav2kFPwLqNw5XG9z9BVnqygKpoGSjelTNFZIqjYwvMS2zIxzKliSByLjSU/lLiO5DcwVN2g52Whi0IoPdXnNBleSRe2CB5EjYb3dR1oXqKtN5lzfXSVh97zh1G3d1eRcVdC3EoNnnu+8H5V2Egag3eDjdH4koleI4nPU9lDCexE5pXp1qqR/qa5moZ1Yx8Hi4O/p8DfPUOZEUWgGlCBq87cc4XODJ2UkoltxRzf1ccWQXa5gHBwnJnqXLA/wCuOhjkaRxSFMbuKf58gqOtD00pdAw1qRZj0g3v5BQCeth1liyzD64MjUfaDNSvfBGIp0Qr+37FIY5ngS75HKiX47j6lqhXSUcJtZ4npwdVk5qk0rMFOiRhvdkZFPpusiDgzoDnHo=
+  - COMMIT=${TRAVIS_COMMIT::8}
+  - secure: PsRv588ESpn2vCoPvpha5j51n713q+HqjGq6KVLNQaUMs5Q7xmfrWRRqYRU45rzxF1N+dCa/Dz7l5PHpUiGJiV8BpQ4MLhVpWbx4dD/8nKR3b/H2geMNJRDj9iuD4+nEi5+01KqCxpKWYu8kqb5lP2H9a/TKgyGuMuR6hvi0xy69fCNIBKEioAxz5qkwTm39Bl1jkcseZ8XYZAwQKZFX6vhFwPKGGt+bZ6nsicPRilcdWccNrZv+K64NCmj8SrUk/P+eXEMDDxqtMT3ZnJ9qrakPB34TrZ2/N1qL6RaisRpRBGvXm52J0TGIpY8UPn3tbX2+I2eFnr3V68KTJMvJfN8+C6ZyxfZ/zIL/bzthJtcCxSH4eNoqoFrnGu4/K/ZKZ2Evd+kU3wjA5J6s8a1HhlpznoLEfM1TYLy8/Vu/r1rwz95DyC4TKswTfJsBvR4MXCnNHNqDS+qIQh60GGdG+Ne1uU+Mm0AHeQuPomVzm5Yo2S4lNeqez2ssmH3npSiElsXrn2VYdEVbkuD7f/eTH93x/i37ZUMtVVrpfKTat1CHZ+V3vr/hwxQerMmefv7ZdLq3Qu7xe6fDJk8Nmly6t3/ItgRPN5Gz66zNXu00Vzj1nKi6PPOFkvV/GFqXEhGxfn26Q6niVDgEBarqtqcTMFIvqO30jRy+LfqUUVMJ/98=
 before_deploy:
 - GOOS=linux GOARCH=amd64 go build  -o kubsrv_Linux_x86_64
+- docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+- export REPO=ksmster/kubsrv
+- export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH
+  ; fi`
+- docker build -f Dockerfile -t $REPO:$COMMIT .
+- docker tag $REPO:$COMMIT $REPO:$TAG
+- docker tag $REPO:$COMMIT $REPO:travis-$TRAVIS_BUILD_NUMBER
+- docker push $REPO
 deploy:
   skip_cleanup: true
   provider: releases
