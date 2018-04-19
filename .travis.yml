@@ -11,6 +11,20 @@ cache:
   directories:
     - $GOPATH/pkg/dep
 
+before_deploy:
+- GOOS=linux GOARCH=amd64 go build -ldflags="$(govvv -flags -version $TRAVIS_TAG -pkg $(go list ./cmd))" -o che_Linux_x86_64
+deploy:
+  skip_cleanup: true
+  provider: releases
+  api_key:
+    secure:
+  file:
+  - kubsrv_Linux_x86_64
+  on:
+    tags: true
+    repo: skabashnyuk/kubsrv
+  api-key:
+    secure: NUI9+Y4eZF8tT+XYeI45EP+5pNvNeUaqczId/+rW8RtWpmCNylIRP+B5LhiclwGo1pk/1zalv+iboNfvgi6n/4PkBHc2rs0tJFinbRcK78nTnLqytOKQnA1k0DdQScQr1xZLCwF0qpiY2NuNHzsXCXCGChGUEfVUKcKL6QLUFDm4LpXPzRAJFtAIcEVmGmWC58pMz7syAkZVOEA9v3X+Spd0BmogwO3jMe0Gjj/mXcFgY+aBluuSz+t1Jxc8eCJeAtiLdEKobm6oVwIKb9xOaWIaE9Y8RLw9Shb+iyMHT2Y1qPIa2+YzEtzD3XTSLQLau8gSoDfOgBEKAlHv0044kiztrbw0pm9f6meubCVXa3FsW0envHE9NLQ8ZcQBTcyzSK19OdWFO94poFVmgFT+s6r6LdRoRcOaVVmwnVfmUhIoi3Rgs9FsMrrlk/8VG78jAKryltjcqSRXpa5ETAJOX9Sn2lUYr3AePOrjsZHjDIMELfbvi1LXRg/yuVeQrVBtijoMnhSsixVHfiSAHGjeTpEnvfmt4Mv1diZuz6CEjGmSFcS5bbQZ24xyYOpNi/nchyU+TCwuCRQvcRhz6i2zi3/VhLUPzmU4ywTY++gRUzAZzcT2Z9sGqy+Zba4IlGxORgpPdPLeUlETMzNEenGHkSqdyUqe/hz3fd1bqZKOUFo=
 
 before_install:
   - go get -u github.com/golang/dep/cmd/dep
