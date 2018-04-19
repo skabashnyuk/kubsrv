@@ -1,34 +1,29 @@
 sudo: false
 language: go
 go:
-  - 1.10.x
+- 1.10.x
 cache:
   directories:
-    - $GOPATH/pkg/dep
-
+  - "$GOPATH/pkg/dep"
 before_deploy:
 - GOOS=linux GOARCH=amd64 go build  -o kubsrv_Linux_x86_64
 deploy:
   skip_cleanup: true
   provider: releases
   api_key:
-    secure:
+    secure: 
   file:
   - kubsrv_Linux_x86_64
   on:
     tags: true
     repo: skabashnyuk/kubsrv
   api-key:
-    secure: NUI9+Y4eZF8tT+XYeI45EP+5pNvNeUaqczId/+rW8RtWpmCNylIRP+B5LhiclwGo1pk/1zalv+iboNfvgi6n/4PkBHc2rs0tJFinbRcK78nTnLqytOKQnA1k0DdQScQr1xZLCwF0qpiY2NuNHzsXCXCGChGUEfVUKcKL6QLUFDm4LpXPzRAJFtAIcEVmGmWC58pMz7syAkZVOEA9v3X+Spd0BmogwO3jMe0Gjj/mXcFgY+aBluuSz+t1Jxc8eCJeAtiLdEKobm6oVwIKb9xOaWIaE9Y8RLw9Shb+iyMHT2Y1qPIa2+YzEtzD3XTSLQLau8gSoDfOgBEKAlHv0044kiztrbw0pm9f6meubCVXa3FsW0envHE9NLQ8ZcQBTcyzSK19OdWFO94poFVmgFT+s6r6LdRoRcOaVVmwnVfmUhIoi3Rgs9FsMrrlk/8VG78jAKryltjcqSRXpa5ETAJOX9Sn2lUYr3AePOrjsZHjDIMELfbvi1LXRg/yuVeQrVBtijoMnhSsixVHfiSAHGjeTpEnvfmt4Mv1diZuz6CEjGmSFcS5bbQZ24xyYOpNi/nchyU+TCwuCRQvcRhz6i2zi3/VhLUPzmU4ywTY++gRUzAZzcT2Z9sGqy+Zba4IlGxORgpPdPLeUlETMzNEenGHkSqdyUqe/hz3fd1bqZKOUFo=
-
+    secure: aJCm+RrLdc/cLs0RQ+u1tsXZJgv7Sszb5X2BfuNcfCPh7LukGU5nGPrhzDbFK2yBlA6A+8WrMkqUxE7T83uWA7rr5oggoytngrC1pveFOaD0eni1pQenDGu+lzXnNUeOP+ApQ0e7VUnLem+bC8yxKEC4i5T17othyjua+01uWzrOpaG4mDfUYJIDuttMqkkVkPleNDEv260BlOvvmrCSCmRuwkxMT5lYLD2JUfo/Ee13yfbtXR3Oa/G2cfQQL8q0dbfszaVxoGGTSROXolLLty6nAHK3hgcr32TrVZanGgMM4FsKvlDdtvRxNMEwuYVvKmTGYuCNcAUx0D0gzuth5ht0l0kX9q8CayahFVILh/PxbAekQU/gXxCpKDyWQpWDjdsg2X0lav6ET9+t7RdMJEAJzg52Ivms2gaiYaRXEWXaTKzVfByl8tWFD0LZla9hOyah+Q9MUsCNX4he21X/rU99WATdmZJqmGxRWJttXkM91acursAUlTNKa8f9WWsjSMhbA0Im7nRTx2yKZqlsHcaIvFDnoBtV9gvIxIuqhRnr58No4C47SHNb+i4waw46IUQOv8hGD4VRSFVZ98ZXEIZYJKp3VGzx9crUjf3Pl7pwDiFKpJ2PILKH7i2+25M13uMD7wpzxKLfISufbTGMMEAVObSyAydtayBATw19DWA=
 before_install:
-  - go get -u github.com/golang/dep/cmd/dep
-
+- go get -u github.com/golang/dep/cmd/dep
 install:
-  - dep ensure
-
+- dep ensure
 script:
-  - go test ./...
-
+- go test ./...
 notifications:
   email: false
