@@ -26,9 +26,10 @@ func main() {
 	//periodically update storage with features and services
 	go func() {
 		storage.EnsureExists()
-
-		for range time.Tick(time.Second * time.Duration(*cheRegistryUpdateInterval)) {
-			storage.UpdateStorage()
+		if *cheRegistryUpdateInterval > 0 {
+			for range time.Tick(time.Second * time.Duration(*cheRegistryUpdateInterval)) {
+				storage.UpdateStorage()
+			}
 		}
 	}()
 
