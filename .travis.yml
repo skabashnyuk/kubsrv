@@ -20,6 +20,14 @@ before_deploy:
 - docker build -f Dockerfile -t  $REPO:$TAG .
 - docker tag $REPO:$TAG $REPO:latest
 - docker push $REPO
+after_success:
+- CGO_ENABLED=0 GOOS=linux go build -a -ldflags '-w -s' -a -installsuffix cgo -o kubsrv_Linux_x86_64
+- docker login -u $DOCKER_USER -p $DOCKER_PASS
+- export REPO=ksmster/kubsrv
+- export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH
+  ; fi`
+- docker build -f Dockerfile -t  $REPO:latest .
+- docker push $REPO
 deploy:
   skip_cleanup: true
   provider: releases
