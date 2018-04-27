@@ -1,54 +1,28 @@
-apiVersion: che.eclipse.org/v1
+apiVersion: v1
 kind: CheService
 metadata:
- name: io.typefox.theia-ide.che-service
+  name: io.typefox.theia-ide.che-service
 spec:
- version: 1.2.2
- services:
-   - apiVersion: v1
-     kind: Service
-     metadata:
-       name: io.typefox.theia-ide.che-service.mainservice
-     spec:
-       selector:
-         app: theia
-       ports:
-       - protocol: TCP
-         port: 80
-         targetPort: 9376
- pods:
-   - apiVersion: v1
-     kind: Pod
-     metadata:
-       name: io.typefox.theia-ide.che-service.mainpod
-     spec:
-       selector:
-         app: theia
-       containers:
-         - image: eclipse/che-theia:nightly
-           labels:
-             che.eclipse.org/container-name: theia-core
-           name: theia
-           env:
-             - name: THEIA_PLUGINS
-               value: ${THEIA_PLUGINS}
-           volumeMounts:
-             - mountPath: "/projects"
-               name: projects
-         - image: maven:latest
-           labels:
-             che.eclipse.org/container-name: theia-maven-sidecar
-           name: theia-sidecar
-     volumes:
-       - name: projects
-         persistentVolumeClaim:
-         claimName: projects
- commands:
-   - apiVersion: che.eclipse.org/v1
-     kind: CheCommand
-     metadata:
-       name: mvn-clean
-     spec:
-       target-label-selector: "che.eclipse.org/container-name= theia-maven-sidecar"
-       working-dir: "$(project)"
-       command: ["mvn", "clean", "install"]
+ version: 1.2.0
+ containers:
+    - image: eclipse/che-theia:nightly
+      resources:
+        requests:
+          memory: 200Mi
+      env:
+        - name: THEIA_PLUGINS
+          value: ${THEIA_PLUGINS}
+      volumes:
+        - mountPath: "/projects"
+          name: projects
+      servers:
+        - name: theia
+          attributes:
+            type: ide
+            internal : true
+          port: 3000
+          protocol: http
+      commands:
+        - name: build
+          working-dir: "$(project)"
+          command: ["mvn", "clean", "install"]
