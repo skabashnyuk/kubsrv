@@ -97,7 +97,7 @@ func (storage *Storage) EnsureExists() {
 		log.Printf("Storage initialized: %s\n", out)
 
 	} else {
-		log.Print("Git storage setup and ready e\n")
+		log.Print("Git storage setup and ready\n")
 	}
 
 }

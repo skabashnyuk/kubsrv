@@ -42,7 +42,7 @@ func main() {
 	router.GET("/service", service.GetServiceByIdList)
 	router.GET("/feature/:name/:version", feature.GetFeature)
 	router.GET("/feature", feature.GetFeatureByIdList)
-	port := "8080"
+	port := "3000"
 
 	if p := os.Getenv("PORT"); p != "" {
 		if _, err := strconv.Atoi(p); err == nil {

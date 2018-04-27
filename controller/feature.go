@@ -7,6 +7,7 @@ import (
 	"github.com/skabashnyuk/kubsrv/storage"
 	"strings"
 	"github.com/skabashnyuk/kubsrv/types"
+	"log"
 )
 
 type Feature struct {
@@ -20,7 +21,9 @@ func (feature *Feature) GetFeature(c *gin.Context) {
 
 	if err != nil {
 		msg, code := ToHTTPError(err)
-		//Error(w, msg, code)
+		if gin.IsDebugging() {
+			log.Printf("Error in  GetFeature %s", err.Error())
+		}
 		http.Error(c.Writer, msg, code)
 		c.Abort()
 		return
@@ -41,7 +44,9 @@ func (feature *Feature) GetFeatureByIdList(c *gin.Context) {
 
 			if err != nil {
 				msg, code := ToHTTPError(err)
-				//Error(w, msg, code)
+				if gin.IsDebugging() {
+					log.Printf("Error in  GetFeatureByIdList %s", err.Error())
+				}
 				http.Error(c.Writer, msg, code)
 				c.Abort()
 				return

@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"github.com/skabashnyuk/kubsrv/types"
 	"strings"
+	"log"
 )
 
 type Service struct {
@@ -20,7 +21,9 @@ func (service *Service) GetService(c *gin.Context) {
 
 	if err != nil {
 		msg, code := ToHTTPError(err)
-		//Error(w, msg, code)
+		if gin.IsDebugging() {
+			log.Printf("Error in  GetService %s", err.Error())
+		}
 		http.Error(c.Writer, msg, code)
 		c.Abort()
 		return
@@ -41,7 +44,9 @@ func (service *Service) GetServiceByIdList(c *gin.Context) {
 
 			if err != nil {
 				msg, code := ToHTTPError(err)
-				//Error(w, msg, code)
+				if gin.IsDebugging() {
+					log.Printf("Error in  GetServiceByIdList %s", err.Error())
+				}
 				http.Error(c.Writer, msg, code)
 				c.Abort()
 				return
