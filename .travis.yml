@@ -17,7 +17,8 @@ before_deploy:
 - export REPO=ksmster/kubsrv
 - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH
   ; fi`
-- docker build -f Dockerfile -t  $REPO:$TAG .
+- docker pull $REPO:latest
+- docker build --cache-from $REPO:latest -f Dockerfile -t  $REPO:$TAG .
 - docker tag $REPO:$TAG $REPO:latest
 - docker push $REPO
 after_success:
