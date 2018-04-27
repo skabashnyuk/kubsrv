@@ -13,7 +13,7 @@ import (
 func main() {
 
 	storage := storage.Storage{}
-	cheRegistryUpdateInterval := flag.Int64("update", 0, "Storage update interval")
+	cheRegistryUpdateInterval := flag.Int64("update", 0, "Storage update interval in seconds")
 	flag.StringVar(&storage.CheRegistryRepository, "registry", "", "Location of repository on filesystem")
 	flag.StringVar(&storage.CheRegistryGithubUrl, "github", "", "Git url of repository to clone")
 	flag.Parse()
