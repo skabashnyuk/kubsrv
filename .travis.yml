@@ -26,7 +26,7 @@ after_success:
 - export REPO=ksmster/kubsrv
 - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH
   ; fi`
-- docker build -f Dockerfile -t  $REPO:latest .
+- docker build --cache-from $REPO:latest -f Dockerfile -t  $REPO:latest .
 - docker push $REPO
 deploy:
   skip_cleanup: true
