@@ -23,6 +23,32 @@ type ItemId struct {
 	Version string
 }
 
+
+
+func (storage *Storage) GetPlugin(Id *ItemId) (*types.ChePlugin, error) {
+	name := strings.Replace(Id.Name, ".", string(os.PathSeparator), -1)
+	cheServiceFile := filepath.Join(storage.CheRegistryRepository, name, Id.Version, "CheMeta.yaml")
+	if _, err := os.Stat(cheServiceFile); os.IsNotExist(err) {
+		return nil, err
+	}
+
+	if gin.IsDebugging() {
+		log.Printf("Requested CheMeta %s", cheServiceFile)
+	}
+
+	data, err := ioutil.ReadFile(cheServiceFile)
+	if err != nil {
+		return nil, err
+	}
+	obj := types.ChePlugin{}
+	err = yaml.Unmarshal(data, &obj)
+	if err != nil {
+		return nil, err
+	}
+	return &obj, nil
+}
+
+
 func (storage *Storage) GetCheService(Id *ItemId) (*types.CheService, error) {
 	name := strings.Replace(Id.Name, ".", string(os.PathSeparator), -1)
 	cheServiceFile := filepath.Join(storage.CheRegistryRepository, name, Id.Version, "CheService.yaml")
@@ -30,7 +56,7 @@ func (storage *Storage) GetCheService(Id *ItemId) (*types.CheService, error) {
 		return nil, err
 	}
 
-	if (gin.IsDebugging()) {
+	if gin.IsDebugging() {
 		log.Printf("Requested CheService %s", cheServiceFile)
 	}
 
@@ -53,7 +79,7 @@ func (storage *Storage) GetCheFeature(Id *ItemId) (*types.CheFeature, error) {
 		return nil, err
 	}
 
-	if (gin.IsDebugging()) {
+	if gin.IsDebugging() {
 		log.Printf("Requested CheService %s", cheServiceFile)
 	}
 

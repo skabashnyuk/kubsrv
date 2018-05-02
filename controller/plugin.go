@@ -9,12 +9,12 @@ import (
 	"log"
 )
 
-type Service struct {
+type Plugin struct {
 	Storage *storage.Storage
 }
 
-func (service *Service) GetService(c *gin.Context) {
-	obj, err := service.Storage.GetCheService(&storage.ItemId{
+func (plugin *Plugin) GetPlugin(c *gin.Context) {
+	obj, err := plugin.Storage.GetPlugin(&storage.ItemId{
 		Name:    c.Param("name"),
 		Version: c.Param("version")})
 
@@ -30,14 +30,14 @@ func (service *Service) GetService(c *gin.Context) {
 	c.JSON(200, obj)
 }
 
-func (service *Service) GetServiceByIdList(c *gin.Context) {
+func (plugin *Plugin) GetLatestPluginsList(c *gin.Context) {
 	ids, exists := c.GetQueryArray("id")
 	if exists {
 		var cheServices []types.CheService
 		for _, k := range ids {
 			stringSlice := strings.Split(k, ":")
 
-			obj, err := service.Storage.GetCheService(&storage.ItemId{
+			obj, err := plugin.Storage.GetCheService(&storage.ItemId{
 				Name:    stringSlice[0],
 				Version: stringSlice[1]})
 

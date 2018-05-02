@@ -128,3 +128,61 @@ type CheServiceParameter struct {
 	Name  string `json:"name"`
 	Value string `json:"value"`
 }
+
+
+type ChePlugin struct {
+
+	// Plugin Name
+	Name string `json:"name"`
+
+	// Plugin version
+	Version string `json:"version"`
+
+	// Plugin title
+	Title string `json:"title"`
+
+	// Plugin created time
+	CreatedAt string `json:"created_at,omitempty"`
+
+	// Plugin updated time
+	UpdatedAt string `json:"updated_at,omitempty"`
+
+	// Plugin installation count
+	InstallationCount int32 `json:"installation_count,omitempty"`
+
+	// Plugin description
+	Description string `json:"description"`
+
+	Licese *PluginLicense `json:"licese,omitempty"`
+
+	Owner *PluginOwner `json:"owner"`
+}
+
+
+type PluginLicense struct {
+
+	// License key
+	Key string `json:"key"`
+
+	// License Name
+	Name string `json:"name"`
+
+	// License url
+	Url string `json:"url"`
+}
+
+
+type PluginOwner struct {
+
+	// Plugin owner
+	Name string `json:"name"`
+
+	// Owner awatar url
+	AvatarUrl string `json:"avatar_url,omitempty"`
+
+	// Owner gravatar id
+	GravatarId string `json:"gravatar_id,omitempty"`
+
+	// Owner url
+	Url string `json:"url,omitempty"`
+}

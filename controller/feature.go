@@ -3,7 +3,6 @@ package controller
 import (
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"github.com/skabashnyuk/kubsrv/render"
 	"github.com/skabashnyuk/kubsrv/storage"
 	"strings"
 	"github.com/skabashnyuk/kubsrv/types"
@@ -28,7 +27,7 @@ func (feature *Feature) GetFeature(c *gin.Context) {
 		c.Abort()
 		return
 	}
-	c.Render(200, render.GYAML{Data: obj})
+	c.JSON(200, obj)
 }
 
 func (feature *Feature) GetFeatureByIdList(c *gin.Context) {
@@ -53,7 +52,7 @@ func (feature *Feature) GetFeatureByIdList(c *gin.Context) {
 			}
 			cheFeatures = append(cheFeatures, *obj)
 		}
-		c.Render(200, render.GYAML{Data: cheFeatures})
+		c.JSON(200, cheFeatures)
 
 	} else {
 		c.String(400, "Invalid request. No id query parameter provided")
