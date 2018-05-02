@@ -4,7 +4,7 @@ import (
 	"testing"
 	"io/ioutil"
 	"encoding/json"
-	"github.com/ghodss/yaml"
+	"gopkg.in/yaml.v2"
 	"os"
 	"github.com/stretchr/testify/assert"
 )

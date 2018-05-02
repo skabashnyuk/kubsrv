@@ -8,10 +8,10 @@ import (
 	"github.com/gin-gonic/gin"
 	"log"
 	"io/ioutil"
-	"github.com/ghodss/yaml"
 	"os/exec"
 	"path"
 	"fmt"
+	"gopkg.in/yaml.v2"
 )
 
 type Storage struct {
