@@ -11,6 +11,7 @@ import (
 	"github.com/ghodss/yaml"
 	"os/exec"
 	"path"
+	"fmt"
 )
 
 type Storage struct {
@@ -23,7 +24,34 @@ type ItemId struct {
 	Version string
 }
 
+func (storage *Storage) GetPlugins(Limit int, Offset int) (*[]types.ChePlugin, error) {
+	var result []types.ChePlugin
 
+	err := filepath.Walk(storage.CheRegistryRepository, func(path string, info os.FileInfo, err error) error {
+		if info.IsDir() {
+			return nil
+		}
+		if strings.HasSuffix(path, "CheMeta.yaml") {
+
+			data, err := ioutil.ReadFile(path)
+			if err != nil {
+				return err
+			}
+			obj := types.ChePlugin{}
+			err = yaml.Unmarshal(data, &obj)
+			if err != nil {
+				return err
+			}
+			result = append(result, obj)
+		}
+		return nil
+	})
+	if err != nil {
+		fmt.Printf("walk error [%v]\n", err)
+	}
+
+	return &result, nil
+}
 
 func (storage *Storage) GetPlugin(Id *ItemId) (*types.ChePlugin, error) {
 	name := strings.Replace(Id.Name, ".", string(os.PathSeparator), -1)
@@ -47,7 +75,6 @@ func (storage *Storage) GetPlugin(Id *ItemId) (*types.ChePlugin, error) {
 	}
 	return &obj, nil
 }
-
 
 func (storage *Storage) GetCheService(Id *ItemId) (*types.CheService, error) {
 	name := strings.Replace(Id.Name, ".", string(os.PathSeparator), -1)

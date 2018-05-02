@@ -4,8 +4,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/skabashnyuk/kubsrv/storage"
 	"net/http"
-	"github.com/skabashnyuk/kubsrv/types"
-	"strings"
 	"log"
 )
 
@@ -31,30 +29,16 @@ func (plugin *Plugin) GetPlugin(c *gin.Context) {
 }
 
 func (plugin *Plugin) GetLatestPluginsList(c *gin.Context) {
-	ids, exists := c.GetQueryArray("id")
-	if exists {
-		var cheServices []types.CheService
-		for _, k := range ids {
-			stringSlice := strings.Split(k, ":")
 
-			obj, err := plugin.Storage.GetCheService(&storage.ItemId{
-				Name:    stringSlice[0],
-				Version: stringSlice[1]})
-
-			if err != nil {
-				msg, code := ToHTTPError(err)
-				if gin.IsDebugging() {
-					log.Printf("Error in  GetServiceByIdList %s", err.Error())
-				}
-				http.Error(c.Writer, msg, code)
-				c.Abort()
-				return
-			}
-			cheServices = append(cheServices, *obj)
+	chePlugins, err := plugin.Storage.GetPlugins(1000, 0)
+	if err != nil {
+		msg, code := ToHTTPError(err)
+		if gin.IsDebugging() {
+			log.Printf("Error in  GetServiceByIdList %s", err.Error())
 		}
-		c.JSON(200, cheServices)
-
-	} else {
-		c.String(400, "Invalid request. No id query parameter provided")
+		http.Error(c.Writer, msg, code)
+		c.Abort()
+		return
 	}
+	c.JSON(200, chePlugins)
 }
