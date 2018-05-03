@@ -1,6 +1,6 @@
 ## What is it
 Prototype of Che Registry implementation. It is used to serve CheFeatures, CheServices and ChePlugins.
-Based on this api https://app..swaggerhub.com/apis/skabashniuk/Che/1.0.0 For now only ```GET``` method has been implemented.
+Based on this api https://app.swaggerhub.com/apis/skabashniuk/Che/1.0.0 For now only ```GET``` method has been implemented.
 ```
 [GIN-debug] GET    /                         --> github.com/skabashnyuk/kubsrv/controller.APIEndpoints (3 handlers)
 [GIN-debug] GET    /plugin/:name/:version    --> github.com/skabashnyuk/kubsrv/controller.(*Plugin).GetPlugin-fm (3 handlers)
