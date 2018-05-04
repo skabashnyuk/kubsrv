@@ -8,6 +8,12 @@
   version = "v1.1.0"
 
 [[projects]]
+  name = "github.com/ghodss/yaml"
+  packages = ["."]
+  revision = "0ca9ea5df5451ffdf184b4428c902747c2c11cd7"
+  version = "v1.0.0"
+
+[[projects]]
   branch = "master"
   name = "github.com/gin-contrib/sse"
   packages = ["."]
@@ -93,6 +99,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "720ee9cb66f4df0ba78d6113f5c98641de62b448b45238072ca3908a63611105"
+  inputs-digest = "48eeb1382d973fd80c3d91f5e88ead5fb3135d1fc61c17d8e9c78e8842132b8a"
   solver-name = "gps-cdcl"
   solver-version = 1

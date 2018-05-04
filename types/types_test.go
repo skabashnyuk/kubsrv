@@ -4,7 +4,7 @@ import (
 	"testing"
 	"io/ioutil"
 	"encoding/json"
-	"gopkg.in/yaml.v2"
+	"github.com/ghodss/yaml"
 	"os"
 	"github.com/stretchr/testify/assert"
 )
@@ -19,7 +19,7 @@ func TestCheServiceYaml(t *testing.T) {
 			Name: "io.typefox.theia-ide.che-service",
 		},
 		Spec: CheServiceSpec{
-			Version: Version{Version: "1.2.0"},
+			Version: "1.2.0",
 			Containers: []Container{
 				{
 					Image: "eclipse/che-theia:nightly",

@@ -16,10 +16,6 @@ type ObjectMeta struct {
 	Labels map[string]string `json:"labels,omitempty"`
 }
 
-type Version struct {
-	Version string `json:"version"`
-}
-
 type CheService struct {
 	TypeMeta   `json:",inline"`
 	ObjectMeta `json:"metadata,omitempty"`
@@ -28,7 +24,7 @@ type CheService struct {
 }
 
 type CheServiceSpec struct {
-	Version
+	Version string `json:"version"`
 
 	// List of containers belonging to the service.
 	Containers []Container `json:"containers"`
@@ -114,7 +110,8 @@ type CheFeature struct {
 }
 
 type CheFeatureSpec struct {
-	Version
+	Version string `json:"version"`
+
 	Services []CheServiceReference `json:"services"`
 }
 
@@ -129,9 +126,7 @@ type CheServiceParameter struct {
 	Value string `json:"value"`
 }
 
-
 type ChePlugin struct {
-
 	// Plugin Name
 	Name string `json:"name"`
 
@@ -158,9 +153,7 @@ type ChePlugin struct {
 	Owner *PluginOwner `json:"owner"`
 }
 
-
 type PluginLicense struct {
-
 	// License key
 	Key string `json:"key"`
 
@@ -171,9 +164,7 @@ type PluginLicense struct {
 	Url string `json:"url"`
 }
 
-
 type PluginOwner struct {
-
 	// Plugin owner
 	Name string `json:"name"`
 

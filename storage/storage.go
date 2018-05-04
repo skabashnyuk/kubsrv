@@ -11,7 +11,7 @@ import (
 	"os/exec"
 	"path"
 	"fmt"
-	"gopkg.in/yaml.v2"
+	"github.com/ghodss/yaml"
 )
 
 type Storage struct {
