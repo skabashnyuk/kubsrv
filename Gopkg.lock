@@ -28,13 +28,13 @@
     "json",
     "render"
   ]
-  revision = "6d913fc343cfac80d656db5be67a0ffb1323ba0d"
+  revision = "bd4f73af679e7d645f6d0277258fa360eda96f2d"
 
 [[projects]]
   name = "github.com/golang/protobuf"
   packages = ["proto"]
-  revision = "925541529c1fa6821df4e44ce2723319eb2be768"
-  version = "v1.0.0"
+  revision = "b4deda0973fb4c70b50d226b1af49f3da59f5265"
+  version = "v1.1.0"
 
 [[projects]]
   name = "github.com/json-iterator/go"
@@ -82,7 +82,7 @@
   branch = "master"
   name = "golang.org/x/sys"
   packages = ["unix"]
-  revision = "3b87a42e500a6dc65dae1a55d0b641295971163e"
+  revision = "6f686a352de66814cdd080d970febae7767857a3"
 
 [[projects]]
   name = "gopkg.in/go-playground/validator.v8"
