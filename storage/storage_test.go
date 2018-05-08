@@ -4,7 +4,6 @@ import (
 	"reflect"
 	"testing"
 	"github.com/skabashnyuk/kubsrv/types"
-	"io/ioutil"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -284,6 +283,34 @@ func TestStorage_GetCheService(t *testing.T) {
 				},
 			},
 			wantErr: false,
+		}, {
+			name: "Should throw error on GetService by is not found",
+			fields: fields{
+				CheRegistryGithubUrl:  "",
+				CheRegistryRepository: "testdata",
+			},
+			args: args{
+				Id: &ItemId{
+					Name:    "org.eclipse.che.theia-ide",
+					Version: "0.2.1",
+				},
+			},
+			want:    nil,
+			wantErr: true,
+		}, {
+			name: "Should throw error on GetService by is invalid",
+			fields: fields{
+				CheRegistryGithubUrl:  "",
+				CheRegistryRepository: "testdata",
+			},
+			args: args{
+				Id: &ItemId{
+					Name:    "org.eclipse.che.invalid",
+					Version: "0.0.1",
+				},
+			},
+			want:    nil,
+			wantErr: true,
 		},
 	}
 	for _, tt := range tests {
@@ -317,7 +344,71 @@ func TestStorage_GetCheFeature(t *testing.T) {
 		want    *types.CheFeature
 		wantErr bool
 	}{
-		// TODO: Add test cases.
+		{
+			name: "Should GetFeature By ID",
+			fields: fields{
+				CheRegistryGithubUrl:  "",
+				CheRegistryRepository: "testdata",
+			},
+			args: args{
+				Id: &ItemId{
+					Name:    "org.eclipse.che.che-theia-github",
+					Version: "0.0.1",
+				},
+			},
+			want: &types.CheFeature{
+				TypeMeta: types.TypeMeta{
+					APIVersion: "v1",
+					Kind:       "CheFeature"},
+				ObjectMeta: types.ObjectMeta{
+					Name:   "che-theia-github",
+					Labels: map[string]string(nil)},
+				Spec: types.CheFeatureSpec{
+					Version: "0.0.1",
+					Services: []types.CheServiceReference{
+						{
+							Name:    "org.eclipse.che.theia-ide",
+							Version: "0.0.1",
+							Parameters: []types.CheServiceParameter{
+								{
+									Name:  "THEIA_PLUGINS",
+									Value: "che-theia-github.tar.gz",
+								},
+							},
+						},
+					},
+				},
+			},
+			wantErr: false,
+		}, {
+			name: "Should throw error on GetFeature by is not found",
+			fields: fields{
+				CheRegistryGithubUrl:  "",
+				CheRegistryRepository: "testdata",
+			},
+			args: args{
+				Id: &ItemId{
+					Name:    "org.eclipse.che.theia-ide",
+					Version: "0.2.1",
+				},
+			},
+			want:    nil,
+			wantErr: true,
+		}, {
+			name: "Should throw error on GetFeature by is invalid",
+			fields: fields{
+				CheRegistryGithubUrl:  "",
+				CheRegistryRepository: "testdata",
+			},
+			args: args{
+				Id: &ItemId{
+					Name:    "org.eclipse.che.invalid",
+					Version: "0.0.1",
+				},
+			},
+			want:    nil,
+			wantErr: true,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -330,9 +421,7 @@ func TestStorage_GetCheFeature(t *testing.T) {
 				t.Errorf("Storage.GetCheFeature() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("Storage.GetCheFeature() = %v, want %v", got, tt.want)
-			}
+			assert.Equal(t, tt.want, got)
 		})
 	}
 }
@@ -379,12 +468,4 @@ func TestStorage_EnsureExists(t *testing.T) {
 			storage.EnsureExists()
 		})
 	}
-}
-
-func mustReadFile(t *testing.T, filename string) string {
-	b, err := ioutil.ReadFile(filename)
-	if err != nil {
-		t.Fatal(err)
-	}
-	return string(b)
 }
