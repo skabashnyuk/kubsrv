@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: CheFeature
+metadata:
+  name: che-theia-ssh
+spec:
+  version: 0.0.1
+  description: Theia's new ssh plugin
+  services:
+    - name : org.eclipse.che.theia-ide
+      version : 0.0.1
+      parameters:
+          - name: THEIA_PLUGINS
+            value: eclipse-che-ssh-extension.tar.gz

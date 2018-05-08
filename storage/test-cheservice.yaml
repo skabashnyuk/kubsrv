@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: CheService
+metadata:
+  name: io.typefox.theia-ide.che-service
+spec:
+ version: 1.2.0
+ containers:
+    - image: eclipse/che-theia:nightly
+      resources:
+        requests:
+          memory: 200Mi
+      env:
+        - name: THEIA_PLUGINS
+          value: ${THEIA_PLUGINS}
+      volumes:
+        - mountPath: "/projects"
+          name: projects
+      servers:
+        - name: theia
+          attributes:
+            type: ide
+            internal : true
+          port: 3000
+          protocol: http
+      commands:
+        - name: build
+          working-dir: "$(project)"
+          command: ["mvn", "clean", "install"]

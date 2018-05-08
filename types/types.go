@@ -148,7 +148,7 @@ type ChePlugin struct {
 	// Plugin description
 	Description string `json:"description"`
 
-	Licese *PluginLicense `json:"licese,omitempty"`
+	Licese *PluginLicense `json:"license,omitempty"`
 
 	Owner *PluginOwner `json:"owner"`
 }
