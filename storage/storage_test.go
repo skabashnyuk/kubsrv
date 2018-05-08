@@ -1,7 +1,6 @@
 package storage
 
 import (
-	"reflect"
 	"testing"
 	"github.com/skabashnyuk/kubsrv/types"
 	"github.com/stretchr/testify/assert"
@@ -23,6 +22,60 @@ func TestStorage_GetPlugins(t *testing.T) {
 		want    *[]types.ChePlugin
 		wantErr bool
 	}{
+		{
+			name: "Should get lastest plugins",
+			fields: fields{
+				CheRegistryGithubUrl:  "",
+				CheRegistryRepository: "testdata",
+			},
+			args: args{
+				Limit:  10,
+				Offset: 20,
+			},
+			want: &[]types.ChePlugin{
+				{
+					Name:              "che-theia-github",
+					Version:           "0.0.1",
+					Title:             "Github Client",
+					CreatedAt:         "2015-11-22T05:40:57Z",
+					UpdatedAt:         "2018-04-22T00:27:28Z",
+					InstallationCount: 88,
+					Description:       "Eclipse Che Plugin for Github",
+					Licese: &types.PluginLicense{
+						Key:  "mit",
+						Name: "MIT License",
+						Url:  "https://api.github.com/licenses/mit",
+					},
+					Owner: &types.PluginOwner{
+						Name:       "redhat",
+						AvatarUrl:  "",
+						GravatarId: "",
+						Url:        "https://redhat.com",
+					},
+				},
+				{
+					Name:              "che-theia-ssh",
+					Version:           "0.0.1",
+					Title:             "SSH Client",
+					CreatedAt:         "2015-11-22T05:40:57Z",
+					UpdatedAt:         "2018-04-22T00:27:28Z",
+					InstallationCount: 88,
+					Description:       "Eclipse Che Plugin for SSH",
+					Licese: &types.PluginLicense{
+						Key:  "mit",
+						Name: "MIT License",
+						Url:  "https://api.github.com/licenses/mit",
+					},
+					Owner: &types.PluginOwner{
+						Name:       "redhat",
+						AvatarUrl:  "",
+						GravatarId: "",
+						Url:        "https://redhat.com",
+					},
+				},
+			},
+			wantErr: false,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -35,9 +88,7 @@ func TestStorage_GetPlugins(t *testing.T) {
 				t.Errorf("Storage.GetPlugins() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("Storage.GetPlugins() = %v, want %v", got, tt.want)
-			}
+			assert.Equal(t, tt.want, got)
 		})
 	}
 }
@@ -426,28 +477,6 @@ func TestStorage_GetCheFeature(t *testing.T) {
 	}
 }
 
-func TestStorage_UpdateStorage(t *testing.T) {
-	type fields struct {
-		CheRegistryRepository string
-		CheRegistryGithubUrl  string
-	}
-	tests := []struct {
-		name   string
-		fields fields
-	}{
-		// TODO: Add test cases.
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			storage := &Storage{
-				CheRegistryRepository: tt.fields.CheRegistryRepository,
-				CheRegistryGithubUrl:  tt.fields.CheRegistryGithubUrl,
-			}
-			storage.UpdateStorage()
-		})
-	}
-}
-
 func TestStorage_EnsureExists(t *testing.T) {
 	type fields struct {
 		CheRegistryRepository string
@@ -457,7 +486,13 @@ func TestStorage_EnsureExists(t *testing.T) {
 		name   string
 		fields fields
 	}{
-		// TODO: Add test cases.
+		{
+			name: "Should return ok on correct repository",
+			fields: fields{
+				CheRegistryGithubUrl:  "",
+				CheRegistryRepository: "testdata",
+			},
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

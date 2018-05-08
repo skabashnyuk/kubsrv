@@ -134,21 +134,25 @@ func (storage *Storage) UpdateStorage() {
 	log.Printf("Storage update: %s\n", out)
 }
 
+func (storage *Storage) CloneStorage() {
+
+	log.Printf("Cloning %s\n", storage.CheRegistryGithubUrl)
+
+	cmd := exec.Command("git", "clone", storage.CheRegistryGithubUrl, ".")
+	cmd.Dir = storage.CheRegistryRepository
+
+	out, err := cmd.Output()
+
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Printf("Storage initialized: %s\n", out)
+}
+
 func (storage *Storage) EnsureExists() {
 
 	if _, err := os.Stat(path.Join(storage.CheRegistryRepository, ".git")); os.IsNotExist(err) {
-		log.Printf("Cloning %s\n", storage.CheRegistryGithubUrl)
-
-		cmd := exec.Command("git", "clone", storage.CheRegistryGithubUrl, ".")
-		cmd.Dir = storage.CheRegistryRepository
-
-		out, err := cmd.Output()
-
-		if err != nil {
-			log.Fatal(err)
-		}
-		log.Printf("Storage initialized: %s\n", out)
-
+		storage.CloneStorage()
 	} else {
 		log.Print("Git storage setup and ready\n")
 	}
