@@ -26,28 +26,26 @@ type ItemId struct {
 func (storage *Storage) GetPlugins(Limit int, Offset int) (*[]types.ChePlugin, error) {
 	var result []types.ChePlugin
 
-	err := filepath.Walk(storage.CheRegistryRepository, func(path string, info os.FileInfo, err error) error {
+	 filepath.Walk(storage.CheRegistryRepository, func(path string, info os.FileInfo, err error) error {
 		if info.IsDir() {
 			return nil
 		}
 		if strings.HasSuffix(path, "CheMeta.yaml") {
-
 			data, err := ioutil.ReadFile(path)
 			if err != nil {
-				return err
+				fmt.Printf("walk error [%v]\n", err)
+				return nil
 			}
 			obj := types.ChePlugin{}
 			err = yaml.Unmarshal(data, &obj)
 			if err != nil {
-				return err
+				fmt.Printf("walk error [%v]\n", err)
+				return nil
 			}
 			result = append(result, obj)
 		}
 		return nil
 	})
-	if err != nil {
-		fmt.Printf("walk error [%v]\n", err)
-	}
 
 	return &result, nil
 }
