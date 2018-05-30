@@ -23,7 +23,7 @@ func TestStorage_GetPlugins(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name: "Should get lastest plugins",
+			name: "Should get latest plugins",
 			fields: fields{
 				CheRegistryGithubUrl:  "",
 				CheRegistryRepository: "testdata",
@@ -79,6 +79,7 @@ func TestStorage_GetPlugins(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			t.Logf("Start %v", tt.name)
 			storage := &Storage{
 				CheRegistryRepository: tt.fields.CheRegistryRepository,
 				CheRegistryGithubUrl:  tt.fields.CheRegistryGithubUrl,
@@ -253,6 +254,7 @@ func TestStorage_GetPlugin(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			t.Logf("Start %v", tt.name)
 			storage := &Storage{
 				CheRegistryRepository: tt.fields.CheRegistryRepository,
 				CheRegistryGithubUrl:  tt.fields.CheRegistryGithubUrl,
@@ -366,6 +368,7 @@ func TestStorage_GetCheService(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			t.Logf("Start %v", tt.name)
 			storage := &Storage{
 				CheRegistryRepository: tt.fields.CheRegistryRepository,
 				CheRegistryGithubUrl:  tt.fields.CheRegistryGithubUrl,
@@ -463,6 +466,7 @@ func TestStorage_GetCheFeature(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			t.Logf("Start %v", tt.name)
 			storage := &Storage{
 				CheRegistryRepository: tt.fields.CheRegistryRepository,
 				CheRegistryGithubUrl:  tt.fields.CheRegistryGithubUrl,
@@ -496,6 +500,7 @@ func TestStorage_EnsureExists(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			t.Logf("Start %v", tt.name)
 			storage := &Storage{
 				CheRegistryRepository: tt.fields.CheRegistryRepository,
 				CheRegistryGithubUrl:  tt.fields.CheRegistryGithubUrl,
