@@ -5,7 +5,6 @@ import (
 	"github.com/skabashnyuk/kubsrv/types"
 	"strings"
 	"path/filepath"
-	"github.com/gin-gonic/gin"
 	"log"
 	"io/ioutil"
 	"os/exec"
@@ -60,9 +59,7 @@ func (storage *Storage) GetPlugin(Id *ItemId) (*types.ChePlugin, error) {
 		return nil, err
 	}
 
-	if gin.IsDebugging() {
-		log.Printf("Requested CheMeta %s", cheServiceFile)
-	}
+	log.Printf("Requested CheMeta %s", cheServiceFile)
 
 	data, err := ioutil.ReadFile(cheServiceFile)
 	if err != nil {
@@ -83,9 +80,7 @@ func (storage *Storage) GetCheService(Id *ItemId) (*types.CheService, error) {
 		return nil, err
 	}
 
-	if gin.IsDebugging() {
-		log.Printf("Requested CheService %s", cheServiceFile)
-	}
+	log.Printf("Requested CheService %s", cheServiceFile)
 
 	data, err := ioutil.ReadFile(cheServiceFile)
 	if err != nil {
@@ -106,9 +101,7 @@ func (storage *Storage) GetCheFeature(Id *ItemId) (*types.CheFeature, error) {
 		return nil, err
 	}
 
-	if gin.IsDebugging() {
-		log.Printf("Requested CheService %s", cheServiceFile)
-	}
+	log.Printf("Requested CheService %s", cheServiceFile)
 
 	data, err := ioutil.ReadFile(cheServiceFile)
 	if err != nil {
