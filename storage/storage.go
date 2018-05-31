@@ -31,6 +31,7 @@ func (storage *Storage) GetPlugins(Limit int, Offset int) (*[]types.ChePlugin, e
 			return nil
 		}
 		if strings.HasSuffix(path, "CheMeta.yaml") {
+			fmt.Printf("walk in [%v]\n", path)
 			data, err := ioutil.ReadFile(path)
 			if err != nil {
 				fmt.Printf("walk error [%v]\n", err)

@@ -47,6 +47,7 @@ before_install:
 install:
 - dep ensure
 script:
+- git status
 - go test ./... -test.v
 notifications:
   email: false
