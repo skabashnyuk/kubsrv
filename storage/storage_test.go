@@ -500,32 +500,3 @@ func TestStorage_GetCheFeature(t *testing.T) {
 		})
 	}
 }
-
-func TestStorage_EnsureExists(t *testing.T) {
-	type fields struct {
-		CheRegistryRepository string
-		CheRegistryGithubUrl  string
-	}
-	tests := []struct {
-		name   string
-		fields fields
-	}{
-		{
-			name: "Should return ok on correct repository",
-			fields: fields{
-				CheRegistryGithubUrl:  "",
-				CheRegistryRepository: "testdata",
-			},
-		},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			t.Logf("Start %v", tt.name)
-			storage := &Storage{
-				CheRegistryRepository: tt.fields.CheRegistryRepository,
-				CheRegistryGithubUrl:  tt.fields.CheRegistryGithubUrl,
-			}
-			storage.EnsureExists()
-		})
-	}
-}
