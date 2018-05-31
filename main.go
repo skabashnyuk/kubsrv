@@ -2,6 +2,7 @@ package main
 
 import (
 	"os"
+	"strconv"
 	"github.com/skabashnyuk/kubsrv/controller"
 	"time"
 	"github.com/skabashnyuk/kubsrv/storage"
@@ -9,6 +10,8 @@ import (
 	"flag"
 	"log"
 	"net/http"
+	"os/signal"
+	"context"
 )
 
 func main() {
@@ -39,7 +42,6 @@ func main() {
 	plugin := &controller.Plugin{Storage: &storage}
 
 	router := httprouter.New()
-
 	router.GET("/", controller.APIEndpoints)
 	router.GET("/plugin/:name/:version", plugin.GetPlugin)
 	router.GET("/plugin/", plugin.GetLatestPluginsList)
@@ -47,49 +49,39 @@ func main() {
 	router.GET("/service", service.GetServiceByIdList)
 	router.GET("/feature/:name/:version", feature.GetFeature)
 	router.GET("/feature", feature.GetFeatureByIdList)
+	port := "3000"
 
-	log.Fatal(http.ListenAndServe(":3000", router))
-	//router := gin.Default()
-	//router.GET("/", controller.APIEndpoints)
-	//router.GET("/plugin/:name/:version", plugin.GetPlugin)
-	//router.GET("/plugin/", plugin.GetLatestPluginsList)
-	//router.GET("/service/:name/:version", service.GetService)
-	//router.GET("/service", service.GetServiceByIdList)
-	//router.GET("/feature/:name/:version", feature.GetFeature)
-	//router.GET("/feature", feature.GetFeatureByIdList)
-	//port := "3000"
-	//
-	//if p := os.Getenv("PORT"); p != "" {
-	//	if _, err := strconv.Atoi(p); err == nil {
-	//		port = p
-	//	}
-	//}
-	//
-	//
-	//srv := &http.Server{
-	//	Addr:    ":"+port,
-	//	Handler: router,
-	//}
-	//
-	//go func() {
-	//	// service connections
-	//	if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-	//		log.Fatalf("listen: %s\n", err)
-	//	}
-	//}()
-	//
-	//// Wait for interrupt signal to gracefully shutdown the server with
-	//// a timeout of 5 seconds.
-	//quit := make(chan os.Signal)
-	//signal.Notify(quit, os.Interrupt)
-	//<-quit
-	//log.Println("Shutdown Server ...")
-	//
-	//ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	//defer cancel()
-	//if err := srv.Shutdown(ctx); err != nil {
-	//	log.Fatal("Server Shutdown:", err)
-	//}
-	//log.Println("Server exiting")
+	if p := os.Getenv("PORT"); p != "" {
+		if _, err := strconv.Atoi(p); err == nil {
+			port = p
+		}
+	}
+
+	srv := &http.Server{
+		Addr:    ":"+port,
+		Handler: router,
+	}
+
+
+	go func() {
+		// service connections
+		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+			log.Fatalf("listen: %s\n", err)
+		}
+	}()
+
+	// Wait for interrupt signal to gracefully shutdown the server with
+	// a timeout of 5 seconds.
+	quit := make(chan os.Signal)
+	signal.Notify(quit, os.Interrupt)
+	<-quit
+	log.Println("Shutdown Server ...")
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	if err := srv.Shutdown(ctx); err != nil {
+		log.Fatal("Server Shutdown:", err)
+	}
+	log.Println("Server exiting")
 
 }
