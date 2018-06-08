@@ -1,7 +1,8 @@
 FROM alpine:3.7
 RUN apk add --no-cache git && \
-    mkdir -p /kubsrv/repo
-
+    mkdir -p /kubsrv/repo && \
+    chgrp -R 0 /kubsrv/repo && \
+    chmod -R g+rwX /kubsrv/repo
 ENV PORT=3000
 ENV CHE_REGISTRY_UPDATE_INTERVAL=60
 ENV CHE_REGISTRY_REPOSITORY=/kubsrv/repo
