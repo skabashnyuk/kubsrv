@@ -11,6 +11,7 @@ import (
 	"path"
 	"fmt"
 	"github.com/ghodss/yaml"
+	"bytes"
 )
 
 type Storage struct {
@@ -128,17 +129,22 @@ func (storage *Storage) UpdateStorage() {
 
 func (storage *Storage) CloneStorage() {
 
-	log.Printf("Cloning %s\n", storage.CheRegistryGithubUrl)
+	log.Printf("Cloning %s to %s \n", storage.CheRegistryGithubUrl, storage.CheRegistryRepository)
 
 	cmd := exec.Command("git", "clone", storage.CheRegistryGithubUrl, ".")
 	cmd.Dir = storage.CheRegistryRepository
 
-	out, err := cmd.Output()
-
+	var out bytes.Buffer
+	var stderr bytes.Buffer
+	cmd.Stdout = &out
+	cmd.Stderr = &stderr
+	err := cmd.Run()
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println(fmt.Sprint(err) + ": " + stderr.String())
+		os.Exit(1)
 	}
-	log.Printf("Storage initialized: %s\n", out)
+	fmt.Println(out.String())
+	log.Printf("Storage initialized: %s\n", out.String())
 }
 
 func (storage *Storage) EnsureExists() {
