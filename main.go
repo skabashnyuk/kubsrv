@@ -39,12 +39,10 @@ func main() {
 
 	service := &controller.Service{Storage: &storage}
 	feature := &controller.Feature{Storage: &storage}
-	plugin := &controller.Plugin{Storage: &storage}
+
 
 	router := gin.Default()
 	router.GET("/", controller.APIEndpoints)
-	router.GET("/plugin/:name/:version", plugin.GetPlugin)
-	router.GET("/plugin/", plugin.GetLatestPluginsList)
 	router.GET("/service/:name/:version", service.GetService)
 	router.GET("/service", service.GetServiceByIdList)
 	router.GET("/feature/:name/:version", feature.GetFeature)

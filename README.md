@@ -3,8 +3,6 @@ Prototype of Che Registry implementation. It is used to serve CheFeatures, CheSe
 Based on this api https://app.swaggerhub.com/apis/skabashniuk/Che/1.0.0 For now only ```GET``` method has been implemented.
 ```
 [GIN-debug] GET    /                         --> github.com/skabashnyuk/kubsrv/controller.APIEndpoints (3 handlers)
-[GIN-debug] GET    /plugin/:name/:version    --> github.com/skabashnyuk/kubsrv/controller.(*Plugin).GetPlugin-fm (3 handlers)
-[GIN-debug] GET    /plugin/                  --> github.com/skabashnyuk/kubsrv/controller.(*Plugin).GetLatestPluginsList-fm (3 handlers)
 [GIN-debug] GET    /service/:name/:version   --> github.com/skabashnyuk/kubsrv/controller.(*Service).GetService-fm (3 handlers)
 [GIN-debug] GET    /service                  --> github.com/skabashnyuk/kubsrv/controller.(*Service).GetServiceByIdList-fm (3 handlers)
 [GIN-debug] GET    /feature/:name/:version   --> github.com/skabashnyuk/kubsrv/controller.(*Feature).GetFeature-fm (3 handlers)
@@ -43,69 +41,7 @@ Example ```docker run -it -v /home/user/mylocalrepo:/kubsrv/repo -e CHE_REGISTRY
 
 ## How to use
 1. Run ```docker run -it  -p 3000:3000 ksmster/kubsrv``` to start Che registry. Registry content will be taken from here https://github.com/skabashnyuk/che-registry.git
-2. Run  ``` curl  http://localhost:3000/plugin/``` To get latest version of all plugins.
-```
-[
-  {
-    "name": "che-theia-github",
-    "version": "0.0.1",
-    "title": "SSH Client",
-    "created_at": "2015-11-22T05:40:57Z",
-    "updated_at": "2018-04-22T00:27:28Z",
-    "installation_count": 88,
-    "description": "Eclipse Che Plugin for Github",
-    "owner": {
-      "name": "redhat",
-      "url": "https://redhat.com"
-    }
-  },
-  {
-    "name": "che-theia-ssh",
-    "version": "0.0.1",
-    "title": "SSH Client",
-    "created_at": "2015-11-22T05:40:57Z",
-    "updated_at": "2018-04-22T00:27:28Z",
-    "installation_count": 88,
-    "description": "Eclipse Che Plugin for SSH",
-    "owner": {
-      "name": "redhat",
-      "url": "https://redhat.com"
-    }
-  },
-  {
-    "name": "che-theia-ide",
-    "version": "0.0.1",
-    "title": "Theia IDE service",
-    "created_at": "2015-11-22T05:40:57Z",
-    "updated_at": "2018-04-22T00:27:28Z",
-    "installation_count": 88,
-    "description": "Eclipse Che Theia IDE",
-    "owner": {
-      "name": "redhat",
-      "url": "https://redhat.com"
-    }
-  }
-]
-
-```
-3. Run  ```curl  http://localhost:3000/plugin/org.eclipse.che.che-theia-ssh/0.0.1``` To get concrete plugin.
-```
-{
-  "name": "che-theia-ssh",
-  "version": "0.0.1",
-  "title": "SSH Client",
-  "created_at": "2015-11-22T05:40:57Z",
-  "updated_at": "2018-04-22T00:27:28Z",
-  "installation_count": 88,
-  "description": "Eclipse Che Plugin for SSH",
-  "owner": {
-    "name": "redhat",
-    "url": "https://redhat.com"
-  }
-}
-
-```
-4. Run  ```curl  http://localhost:3000/feature/org.eclipse.che.che-theia-ssh/0.0.1``` To get concrete feature.
+2. Run  ```curl  http://localhost:3000/feature/org.eclipse.che.che-theia-ssh/0.0.1``` To get concrete feature.
 ```
 {
   "apiVersion": "v1",
@@ -131,7 +67,7 @@ Example ```docker run -it -v /home/user/mylocalrepo:/kubsrv/repo -e CHE_REGISTRY
 }
 
 ```
-5. Run ```curl  "http://localhost:3000/feature?id=org.eclipse.che.che-theia-ssh:0.0.1&id=org.eclipse.che.che-theia-github:0.0.1"``` 
+3. Run ```curl  "http://localhost:3000/feature?id=org.eclipse.che.che-theia-ssh:0.0.1&id=org.eclipse.che.che-theia-github:0.0.1"``` 
    To get features by ids
 ```
 [
@@ -182,7 +118,7 @@ Example ```docker run -it -v /home/user/mylocalrepo:/kubsrv/repo -e CHE_REGISTRY
 ]
 
 ```
-6.  Run ```curl  http://localhost:3000/service/org.eclipse.che.theia-ide/0.0.1``` To get concrete CheService
+4.  Run ```curl  http://localhost:3000/service/org.eclipse.che.theia-ide/0.0.1``` To get concrete CheService
 ```
 {
   "apiVersion": "v1",
@@ -228,7 +164,7 @@ Example ```docker run -it -v /home/user/mylocalrepo:/kubsrv/repo -e CHE_REGISTRY
   }
 }
 ```
-7. Run ```curl  http://localhost:3000/service?id=org.eclipse.che.theia-ide:0.0.1``` To get services by ids
+5. Run ```curl  http://localhost:3000/service?id=org.eclipse.che.theia-ide:0.0.1``` To get services by ids
 ```
 [
   {
@@ -278,14 +214,8 @@ Example ```docker run -it -v /home/user/mylocalrepo:/kubsrv/repo -e CHE_REGISTRY
 ```
 
 
-## How to add new ChePlugin
-1. Add CheMata.yaml to folder like this ```https://github.com/skabashnyuk/che-registry/tree/master/org/eclipse/che/che-theia-github/0.0.1```
+## How to add new CheFeature
+1. Add CheFeature to folder like this ```https://github.com/skabashnyuk/che-registry/tree/master/org/eclipse/che/che-theia-github/0.0.1```
    Where path consructed with name and version and dots in name replaces with slashes.
-2. CheFeature.yaml in same folder   
-3. Add Theia plugin in same folder
-4. Add CheService in same folder if needed. Like this ```https://github.com/skabashnyuk/che-registry/blob/master/org/eclipse/che/theia-ide/0.0.1/CheService.yaml```    
-
-
-## TODO
- - [ ] Return latest version of all plugins. Now all plugins will be returned
- - [ ] Plugins pagination.
+2. Add Theia plugin in same folder
+3. Add CheService in same folder if needed. Like this ```https://github.com/skabashnyuk/che-registry/blob/master/org/eclipse/che/theia-ide/0.0.1/CheService.yaml```    
