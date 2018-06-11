@@ -1,36 +1,38 @@
 package controller
 
 import (
+	"github.com/gin-gonic/gin"
 	"fmt"
 	"net/http"
 	"os"
-	"github.com/julienschmidt/httprouter"
 )
 
-var cheRegistryRepository = os.Getenv("CHE_REGISTRY_REPOSITORY")
+var cheRegistryRepository  = os.Getenv("CHE_REGISTRY_REPOSITORY")
 
-func APIEndpoints(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+func APIEndpoints(c *gin.Context) {
 	reqScheme := "http"
 
-	if r.TLS != nil {
+	if c.Request.TLS != nil {
 		reqScheme = "https"
 	}
 
 	reqHost := "localhost:8080"
 
-	if r.Host != "" {
-		reqHost = r.Host
+	if c.Request.Host != "" {
+		reqHost = c.Request.Host
 	}
 
 	baseURL := fmt.Sprintf("%s://%s", reqScheme, reqHost)
 
 	resources := map[string]string{
-		"service_url": baseURL + "/service/{name}/{version}",
-		"feature_url": baseURL + "/feature/{name}/{version}",
+		"service_url":  baseURL + "/service/{name}/{version}",
+		"feature_url":  baseURL + "/feature/{name}/{version}",
 	}
-	w.WriteHeader(http.StatusOK)
-	WriteJSON(w, resources)
+
+	c.IndentedJSON(http.StatusOK, resources)
 }
+
+
 
 // toHTTPError returns a non-specific HTTP error message and status code
 // for a given non-nil error value. It's important that toHTTPError does not

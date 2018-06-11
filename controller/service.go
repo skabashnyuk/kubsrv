@@ -1,38 +1,37 @@
 package controller
 
 import (
+	"github.com/gin-gonic/gin"
 	"github.com/skabashnyuk/kubsrv/storage"
 	"net/http"
 	"github.com/skabashnyuk/kubsrv/types"
 	"strings"
 	"log"
-	"github.com/julienschmidt/httprouter"
-	"fmt"
 )
 
 type Service struct {
 	Storage *storage.Storage
 }
 
-func (service *Service) GetService(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+func (service *Service) GetService(c *gin.Context) {
 	obj, err := service.Storage.GetCheService(&storage.ItemId{
-		Name:    params.ByName("name"),
-		Version: params.ByName("version")})
+		Name:    c.Param("name"),
+		Version: c.Param("version")})
 
 	if err != nil {
 		msg, code := ToHTTPError(err)
-
-		log.Printf("Error in  GetService %s", err.Error())
-		http.Error(w, msg, code)
-
+		if gin.IsDebugging() {
+			log.Printf("Error in  GetService %s", err.Error())
+		}
+		http.Error(c.Writer, msg, code)
+		c.Abort()
 		return
 	}
-	w.WriteHeader(http.StatusOK)
-	WriteJSON(w, obj)
+	c.JSON(200, obj)
 }
 
-func (service *Service) GetServiceByIdList(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
-	ids, exists := GetQueryArray(r, "id")
+func (service *Service) GetServiceByIdList(c *gin.Context) {
+	ids, exists := c.GetQueryArray("id")
 	if exists {
 		var cheServices []types.CheService
 		for _, k := range ids {
@@ -44,18 +43,18 @@ func (service *Service) GetServiceByIdList(w http.ResponseWriter, r *http.Reques
 
 			if err != nil {
 				msg, code := ToHTTPError(err)
-
-				log.Printf("Error in  GetServiceByIdList %s", err.Error())
-				http.Error(w, msg, code)
+				if gin.IsDebugging() {
+					log.Printf("Error in  GetServiceByIdList %s", err.Error())
+				}
+				http.Error(c.Writer, msg, code)
+				c.Abort()
 				return
 			}
 			cheServices = append(cheServices, *obj)
 		}
-		w.WriteHeader(http.StatusOK)
-		WriteJSON(w, cheServices)
+		c.JSON(200, cheServices)
 
 	} else {
-		w.WriteHeader(400)
-		fmt.Fprint(w, "Invalid request. No id query parameter provided")
+		c.String(400, "Invalid request. No id query parameter provided")
 	}
 }

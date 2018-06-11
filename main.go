@@ -3,13 +3,13 @@ package main
 import (
 	"os"
 	"strconv"
+	"github.com/gin-gonic/gin"
 	"github.com/skabashnyuk/kubsrv/controller"
 	"time"
 	"github.com/skabashnyuk/kubsrv/storage"
-	"github.com/julienschmidt/httprouter"
 	"flag"
-	"log"
 	"net/http"
+	"log"
 	"os/signal"
 	"context"
 )
@@ -41,7 +41,7 @@ func main() {
 	feature := &controller.Feature{Storage: &storage}
 	plugin := &controller.Plugin{Storage: &storage}
 
-	router := httprouter.New()
+	router := gin.Default()
 	router.GET("/", controller.APIEndpoints)
 	router.GET("/plugin/:name/:version", plugin.GetPlugin)
 	router.GET("/plugin/", plugin.GetLatestPluginsList)
@@ -57,11 +57,11 @@ func main() {
 		}
 	}
 
+
 	srv := &http.Server{
 		Addr:    ":"+port,
 		Handler: router,
 	}
-
 
 	go func() {
 		// service connections
@@ -83,5 +83,7 @@ func main() {
 		log.Fatal("Server Shutdown:", err)
 	}
 	log.Println("Server exiting")
+
+
 
 }
